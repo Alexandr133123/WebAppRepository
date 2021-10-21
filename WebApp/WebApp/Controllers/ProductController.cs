@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApp.DataAccessLayer.Model;
 using WebApp.BusinessLogicLayer.IServices;
-using WebApp.PresentationLayer.Mapper;
+using AutoMapper;
 using WebApp.PresentationLayer.DTO;
 namespace WebApp.Controllers
 {
@@ -14,20 +14,20 @@ namespace WebApp.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        IProductService service;
-        MapperHandler mapper;
+       private IProductService service;
+       private IMapper mapper;
 
-        public ProductController(IProductService service,MapperHandler mapper)
+        public ProductController(IProductService service,IMapper mapper)
         {
             this.service = service;
             this.mapper = mapper;
         }
 
         [HttpGet]
-        public ICollection<ViewProduct> GetViewProducts()
+        public IEnumerable<ViewProduct> GetViewProducts()
         {
 
-            return mapper.mapProduct(service.GetProductsFromRep());
+            return mapper.Map<IEnumerable<ViewProduct>>(service.GetProducts());
            
         }
 

@@ -15,7 +15,6 @@ using WebApp.DataAccessLayer.Repository;
 using WebApp.BusinessLogicLayer.IServices;
 using WebApp.BusinessLogicLayer.Services;
 using WebApp.PresentationLayer.MapperConfig;
-using WebApp.PresentationLayer.Mapper;
 using AutoMapper;
 namespace WebApp
 {
@@ -34,10 +33,9 @@ namespace WebApp
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
             
-            services.AddScoped<IRepositoryHandler, RepositoryHandler>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<MapperHandler>();
-            services.AddTransient<MapperConfigManager>();
+            services.AddTransient<IMapper>((s) => MapperConfigManager.GetConfig().CreateMapper());
             services.AddControllers();
             services.AddCors();
             services.AddControllersWithViews().AddNewtonsoftJson(options =>

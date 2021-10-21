@@ -9,16 +9,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.DataAccessLayer.Repository
 {
-    public class RepositoryHandler : IRepositoryHandler 
+    public class ProductRepository : IProductRepository 
     {
-        ApplicationContext db;
+        private ApplicationContext db;
 
-        public RepositoryHandler(ApplicationContext context)
+        public ProductRepository(ApplicationContext context)
         {
             db = context;
         }
 
-       public IEnumerable<Product> GetProduct()
+       public List<Product> GetProducts()
        {
             return db.Products
                    .Include(c => c.ProductCategories).ToList();

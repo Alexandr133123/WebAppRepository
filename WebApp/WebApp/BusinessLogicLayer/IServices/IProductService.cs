@@ -8,6 +8,6 @@ namespace WebApp.BusinessLogicLayer.IServices
 {
     public interface IProductService
     {
-        ICollection<Product> GetProductsFromRep();
+        List<Product> GetProducts();
     }
 }

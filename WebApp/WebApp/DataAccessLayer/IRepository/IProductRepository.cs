@@ -6,10 +6,10 @@ using WebApp.DataAccessLayer.Model;
 
 namespace WebApp.DataAccessLayer.IRepository
 {
-    public interface IRepositoryHandler
+    public interface IProductRepository
     {
 
-        IEnumerable<Product> GetProduct();
+        List<Product> GetProducts();
 
     }
 }

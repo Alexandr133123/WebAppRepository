@@ -9,16 +9,16 @@ namespace WebApp.BusinessLogicLayer.Services
 {
     public class ProductService : IProductService
     {
-        IRepositoryHandler repository;
+       private IProductRepository repository;
 
-        public ProductService(IRepositoryHandler repository)
+        public ProductService(IProductRepository repository)
         {
             this.repository = repository;
         }
 
-        public ICollection<Product> GetProductsFromRep()
+        public List<Product> GetProducts()
         {
-            return repository.GetProduct().ToList();
+            return repository.GetProducts();
         }
 
     }

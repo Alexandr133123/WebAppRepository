@@ -7,18 +7,18 @@ using WebApp.DataAccessLayer.Model;
 using WebApp.PresentationLayer.DTO;
 namespace WebApp.PresentationLayer.MapperConfig
 {
-    public class MapperConfigManager
+    public static class MapperConfigManager
     {
-        private MapperConfiguration mapperConfig = new MapperConfiguration(mc =>
+        private static MapperConfiguration MapperConfig = new MapperConfiguration(mc =>
         {
             mc.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
             mc.AddProfile(new MapperProfile());
 
         });
     
-        public MapperConfiguration getConfig()
+        public static MapperConfiguration GetConfig()
         {
-            return mapperConfig;
+            return MapperConfig;
         }
     }
 

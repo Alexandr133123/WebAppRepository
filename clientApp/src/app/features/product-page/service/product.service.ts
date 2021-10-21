@@ -1,14 +1,15 @@
 import {HttpClient} from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
 
 @Injectable()
-export class HttpRequestService{
+export class ProductService{
    
     constructor(private http: HttpClient){}
 
-    private url = 'http://localhost:12564/api/product';
+    private url = environment.apiUrl + 'product';
 
-    HttpGet(){
+    GetProducts(){
         return this.http.get(this.url);
     }
     

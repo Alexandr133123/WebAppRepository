@@ -1,10 +1,11 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { TableComponent } from "./table.component";
+import { ProductComponent } from "./product.component";
 import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule } from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import { ProductService } from "./service/product.service";
 @NgModule({
     imports:[
         BrowserModule,
@@ -14,11 +15,9 @@ import {MatIconModule} from "@angular/material/icon";
         MatIconModule
     ],
     declarations:[
-        TableComponent
+        ProductComponent
     ],
-    exports:[
-        TableComponent
-    ]
+    providers: [ProductService]
 })
 
-export class TableModule{}
+export class ProductModule { }

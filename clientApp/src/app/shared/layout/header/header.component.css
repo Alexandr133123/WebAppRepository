@@ -1,5 +1,9 @@
-.example-button-row {
-    display: table-cell;
-    width: 490px;
-  }
+a{
+  font-size: 35px;
+}
   
+div{
+  margin: 0px;
+  background-color: #673ab7;
+  color:white;
+}

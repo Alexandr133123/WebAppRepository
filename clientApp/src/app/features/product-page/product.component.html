@@ -1,17 +1,23 @@
-<table mat-table [dataSource] = "products" class="mat-elevation-z8" style="width: 100%">
-    <ng-container matColumnDef="Id">
-        <th mat-header-cell *matHeaderCellDef> Id </th>
-        <td mat-cell *matCellDef="let products"> {{products?.productId}} </td>
-      </ng-container>
-    <ng-container matColumnDef="Name">
-        <th mat-header-cell *matHeaderCellDef> ProductName </th>
-        <td mat-cell *matCellDef="let products"> {{products?.productName}} </td>
-      </ng-container>  
-   <ng-container matColumnDef="Price">
-        <th mat-header-cell *matHeaderCellDef> Price </th>
-        <td mat-cell *matCellDef="let products"> {{products?.price}} </td>
-      </ng-container> 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-
+<div style="margin:10px 10px; padding: 20px 200px; display: inline-block;">
+    <aside style=" width: 250px; margin: 0px 1px ; float:left;"><product-IOOS-comp (sendOutOfStock)="getIncludeOutOfStock($event)"></product-IOOS-comp><product-price-slider-comp [maxProductPrice]="maxProductPrice" (sendProductPriceFilter)="getPriceFilter($event)"></product-price-slider-comp><XCategory-sidebar-info (sendCategories)="getCategoriesFilter($event)"></XCategory-sidebar-info></aside>
+    <div style="float: left; margin: 0 30px;">
+            <product-search-input (sendInputString)="getNameFilter($event)"></product-search-input>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
+                <ng-container matColumnDef="card">
+                    <th mat-header-cell *matHeaderCellDef style="font-weight:bold; font-size: 25px; color: black;"> Product </th>
+                    <td mat-cell *matCellDef="let p"> 
+                        <Xproduct-info [product]="p" (sendProductId)="onDeleteAction($event)">
+                        </Xproduct-info>
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+                <mat-paginator
+                        #paginator
+                        [pageSize]="5"
+                        [pageSizeOptions]="[1,3,5]"
+                        aria-label="Select page">
+                </mat-paginator>
+    </div>
+</div>

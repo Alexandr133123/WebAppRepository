@@ -2,22 +2,46 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { ProductComponent } from "./product.component";
-import { MatTableModule } from "@angular/material/table";
+import {MatCardModule} from "@angular/material/card";
+import { ProductInfoComponent } from "./features/product-info/product-info.component";
 import { MatButtonModule } from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-import { ProductService } from "./service/product.service";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import { CategorySidebarInfoComponent } from "./features/category-sidebar-info/category-sidebar-info.component";
+import { MatTreeModule } from "@angular/material/tree";
+import {MatCheckboxModule} from "@angular/material/checkbox"
+import {MatSliderModule} from '@angular/material/slider';
+import { ProductSearchInputComponent } from "./features/product-search-input/product-search-input.component";
+import { ProductPriceSliderComponent } from "./features/category-sidebar-info/features/product-price-slider/product-prive-slider.component";
+import { IncludeOutOfStockComponent } from "./features/category-sidebar-info/features/product-includeOutOfStock-checkbox/product-IOOS.components";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatTableModule } from "@angular/material/table";
 @NgModule({
     imports:[
         BrowserModule,
         FormsModule,
-        MatTableModule,
+        MatCardModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTreeModule,
+        MatCheckboxModule,
+        MatSliderModule,
+        MatPaginatorModule,
+        MatTableModule
     ],
     declarations:[
-        ProductComponent
+        ProductComponent,
+        ProductInfoComponent,
+        CategorySidebarInfoComponent,
+        ProductSearchInputComponent,
+        ProductPriceSliderComponent,
+        IncludeOutOfStockComponent
+    
     ],
-    providers: [ProductService]
+    
 })
 
 export class ProductModule { }

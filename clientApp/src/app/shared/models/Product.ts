@@ -4,5 +4,5 @@ export interface Product{
      price: number;
      quantityInStock: number;
      lastModified: Date;
-     ProductCategoriesId?: number[]; 
+     productCategoriesId?: number[]; 
 }

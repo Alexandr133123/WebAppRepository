@@ -24,14 +24,20 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ViewProduct> GetViewProducts()
+        public IEnumerable<ViewProduct> GetProducts()
         {
 
             return mapper.Map<IEnumerable<ViewProduct>>(service.GetProducts());
            
         }
 
-        
+        [HttpGet]
+        [Route("filter")]
+        public IEnumerable<Product> GetFilteredProducts([FromQuery] Filters filters )
+        {
+            return service.GetProducts(filters);
+        }
+
 
     }
 }

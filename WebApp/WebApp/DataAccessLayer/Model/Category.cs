@@ -7,18 +7,12 @@ namespace WebApp.DataAccessLayer.Model
 {
     public class Category
     {
-        public Category()
-        {
-            InverseFkParentCategory = new HashSet<Category>();
-            ProductCategories = new HashSet<ProductCategory>();
-        }
 
-        public int PkCategoryId { get; set; }
+        public int PK_CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public int? FkParentCategoryId { get; set; }
-
-        public  Category FkParentCategory { get; set; }
-        public  ICollection<Category> InverseFkParentCategory { get; set; }
-        public  ICollection<ProductCategory> ProductCategories { get; set; }
+        public int? FK_ParentCategoryId { get; set; }
+        public virtual  Category FK_ParentCategory { get; set; }
+        public virtual ICollection<Category> InverseFkParentCategory { get; set; }
+        public virtual  ICollection<Product> Products { get; set; }
     }
 }

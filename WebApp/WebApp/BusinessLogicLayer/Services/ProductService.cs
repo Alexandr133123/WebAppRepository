@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WebApp.BusinessLogicLayer.IServices;
 using WebApp.DataAccessLayer.IRepository;
 using WebApp.DataAccessLayer.Model;
+using WebApp.PresentationLayer.DTO;
 namespace WebApp.BusinessLogicLayer.Services
 {
     public class ProductService : IProductService
@@ -16,9 +17,14 @@ namespace WebApp.BusinessLogicLayer.Services
             this.repository = repository;
         }
 
-        public List<Product> GetProducts()
+        public IEnumerable<Product> GetProducts()
         {
             return repository.GetProducts();
+        }
+
+        public IEnumerable<Product> GetProducts(Filters filters)
+        {
+            return repository.GetProducts(filters);
         }
 
     }

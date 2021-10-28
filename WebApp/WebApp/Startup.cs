@@ -15,6 +15,7 @@ using WebApp.DataAccessLayer.Repository;
 using WebApp.BusinessLogicLayer.IServices;
 using WebApp.BusinessLogicLayer.Services;
 using WebApp.PresentationLayer.MapperConfig;
+using Microsoft.EntityFrameworkCore.Proxies;
 using AutoMapper;
 namespace WebApp
 {
@@ -31,14 +32,18 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<ApplicationContext>(options =>
+                       options.UseSqlServer(connection));
             
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IMapper>((s) => MapperConfigManager.GetConfig().CreateMapper());
             services.AddControllers();
             services.AddCors();
-            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
         }

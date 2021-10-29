@@ -17,15 +17,14 @@ namespace WebApp.BusinessLogicLayer.Services
             this.repository = repository;
         }
 
-        public IEnumerable<Product> GetProducts()
-        {
-            return repository.GetProducts();
-        }
 
-        public IEnumerable<Product> GetProducts(Filters filters)
+        public IQueryable<Product> GetProducts(Filters filters)
         {
             return repository.GetProducts(filters);
         }
-
+        public decimal GetMaxPrice()
+        {
+            return repository.GetMaxPrice();
+        }
     }
 }

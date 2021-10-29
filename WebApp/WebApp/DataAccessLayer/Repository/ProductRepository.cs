@@ -8,10 +8,11 @@ using WebApp.PresentationLayer.DTO;
 using System.Data;
 using System.Threading.Tasks;
 using System.Collections;
+using System;
 
 namespace WebApp.DataAccessLayer.Repository
 {
-    public class ProductRepository : IProductRepository 
+    public class ProductRepository : IProductRepository
     {
         private ApplicationContext db;
         private ICategoryRepository categoryRepository;
@@ -20,28 +21,19 @@ namespace WebApp.DataAccessLayer.Repository
         {
             this.db = db;
             this.categoryRepository = categoryRepository;
-           
+
         }
 
-       public IQueryable<Product> GetProducts()
-       {
-            return db.Products
-                   .Include(c => c.Categories)
-                   .AsNoTracking();
-
-       }
-
-
-        public IQueryable<Category> GetCategories()
-        { 
-            return db.Categories.AsNoTracking();
+        public decimal GetMaxPrice()
+        {
+            return db.Products.Max(p => p.Price); 
         }
 
-        public IQueryable<Product> GetProducts(Filters filters)
+        public  IQueryable<Product> GetProducts(Filters filters)
         {
             IQueryable<Product> query = db.Products;
 
-            if (filters.PriceFrom.HasValue && filters.PriceTo.HasValue && !(filters.PriceFrom == 0 && filters.PriceTo == 0) && filters.PriceFrom <= filters.PriceTo)
+            if (filters.PriceTo.HasValue && filters.PriceTo != 0 && filters.PriceFrom < filters.PriceTo)
             {
                 query = query.Where(p => p.Price >= filters.PriceFrom && p.Price <= filters.PriceTo);
             }
@@ -50,22 +42,24 @@ namespace WebApp.DataAccessLayer.Repository
             {
                 query = query.Where(p => p.QuantityInStock >= 0);
             }
-            else 
+            else
             {
                 query = query.Where(p => p.QuantityInStock > 0);
             }
 
-            if(filters.ProductName != null && filters.ProductName.Length != 0)
+            if (!String.IsNullOrWhiteSpace(filters.ProductName))
             {
                 query = query.Where(p => p.ProductName.Contains(filters.ProductName));
             }
 
-            if(filters.Categores != null && filters.Categores.Count != 0)
+            if (filters.Categores != null && filters.Categores.Count != 0)
             {
-                query = query.Where(p => p.Categories.Any(c => categoryRepository.GetCategories(filters.Categores).AsNoTracking().ToList().Contains(c)));  
+                query = query.Where(p => p.Categories.Any(c => categoryRepository.GetCategories(filters.Categores).AsNoTracking().ToList().Contains(c)));
             }
 
-            return query;                
+            var result = query
+           .AsNoTracking();
+            return result;
         }
 
     }

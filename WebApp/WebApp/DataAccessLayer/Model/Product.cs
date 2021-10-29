@@ -13,6 +13,6 @@ namespace WebApp.DataAccessLayer.Model
         public decimal Price { get; set; }
         public int QuantityInStock { get; set; }
         public DateTime LastModified { get; set; }
-        public virtual ICollection<Category> Categories { get; set; }
+        public ICollection<Category> Categories { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace WebApp.BusinessLogicLayer.IServices
 {
     public interface IProductService
     {
-        IEnumerable<Product> GetProducts();
-        IEnumerable<Product> GetProducts(Filters filters);
+        IQueryable<Product> GetProducts(Filters filters);
+        decimal GetMaxPrice();
     }
 }

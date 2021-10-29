@@ -26,9 +26,7 @@ namespace WebApp.PresentationLayer.MapperConfig
     {
         public MapperProfile()
         {
-            CreateMap<Product, ViewProduct>()
-                .ForMember(c => c.ProductCategoriesId, p => p.MapFrom(pv => pv.Categories.Select(i => i.PK_CategoryId)))
-                .ForMember(pf => pf.ProductId, p => p.MapFrom(pv => pv.PK_ProductId));
+            CreateMap<Product, ViewProduct>();
             CreateMap<Category, ViewCategory>()
                 .ForMember(vc => vc.CategoryId, c => c.MapFrom(pc => pc.PK_CategoryId))
                 .ForMember(vc => vc.ParentCategory, c => c.MapFrom(pc => pc.InverseFkParentCategory))

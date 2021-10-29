@@ -9,8 +9,7 @@ namespace WebApp.DataAccessLayer.IRepository
 {
     public interface IProductRepository
     {
-
-        IQueryable<Product> GetProducts();
+        decimal GetMaxPrice();
         IQueryable<Product> GetProducts(Filters filters);
 
     }

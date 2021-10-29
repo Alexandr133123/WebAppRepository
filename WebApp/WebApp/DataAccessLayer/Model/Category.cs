@@ -11,8 +11,8 @@ namespace WebApp.DataAccessLayer.Model
         public int PK_CategoryId { get; set; }
         public string CategoryName { get; set; }
         public int? FK_ParentCategoryId { get; set; }
-        public virtual  Category FK_ParentCategory { get; set; }
-        public virtual ICollection<Category> InverseFkParentCategory { get; set; }
-        public virtual  ICollection<Product> Products { get; set; }
+        public Category FK_ParentCategory { get; set; }
+        public ICollection<Category> InverseFkParentCategory { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

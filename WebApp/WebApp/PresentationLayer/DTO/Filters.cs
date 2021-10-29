@@ -23,5 +23,6 @@ namespace WebApp.PresentationLayer.DTO
 
         [FromQuery(Name ="productName")]
         public string ProductName { get; set; }
+
     }
 }

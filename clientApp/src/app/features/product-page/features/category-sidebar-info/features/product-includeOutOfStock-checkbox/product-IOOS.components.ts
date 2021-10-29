@@ -6,14 +6,14 @@ import { FilterEventService } from "src/app/features/product-page/service/filter
     templateUrl: './product-IOOS.component.html'
 })
 
-export class IncludeOutOfStockComponent implements OnInit{
+export class IncludeOutOfStockComponent implements OnInit {
     @Output() sendOutOfStock = new EventEmitter<boolean>();
     public includeOutOfStock: boolean = false;
-    
-    constructor(private filterEvent: FilterEventService){
+
+    constructor(private filterEvent: FilterEventService) {
     }
 
-    ngOnInit(){
+    public ngOnInit() {
         this.filterEvent.searchInvoked.subscribe(e => this.sendOutOfStock.emit(this.includeOutOfStock));
     }
 

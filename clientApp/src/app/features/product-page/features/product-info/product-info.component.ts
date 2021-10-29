@@ -11,9 +11,9 @@ import { EventEmitter } from "@angular/core";
 
 export class ProductInfoComponent {
     @Input() product: Product;
-    @Output() sendProductId = new EventEmitter<number>();
+    @Output() sendProductId = new EventEmitter<string>();
 
-    delete(productId:number){
-        this.sendProductId.emit(productId);
+    public delete(productName: string) {
+        this.sendProductId.emit(productName);
     }
 }

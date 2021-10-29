@@ -4,7 +4,6 @@ import { Injectable } from "@angular/core";
 @Injectable({
     providedIn: 'root'
 })
-export class FilterEventService
-{ 
-   public searchInvoked = new Subject();
+export class FilterEventService {
+    public searchInvoked = new Subject();
 }

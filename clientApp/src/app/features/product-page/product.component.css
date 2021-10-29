@@ -1,0 +1,19 @@
+.sidebar{
+    width: 250px; 
+    margin: 0px 1px; 
+    float:left;
+}
+.content-div{
+    margin:10px 10px; 
+    padding: 20px 200px; 
+    display: inline-block;
+}
+.product-container{
+    float: left; 
+    margin: 0 30px;
+}
+.mat-table-th{
+    font-weight:bold; 
+    font-size: 25px; 
+    color: black;
+}

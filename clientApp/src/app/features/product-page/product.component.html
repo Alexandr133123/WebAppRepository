@@ -1,23 +1,26 @@
-<div style="margin:10px 10px; padding: 20px 200px; display: inline-block;">
-    <aside style=" width: 250px; margin: 0px 1px ; float:left;"><product-IOOS-comp (sendOutOfStock)="getIncludeOutOfStock($event)"></product-IOOS-comp><product-price-slider-comp [maxProductPrice]="maxProductPrice" (sendProductPriceFilter)="getPriceFilter($event)"></product-price-slider-comp><XCategory-sidebar-info (sendCategories)="getCategoriesFilter($event)"></XCategory-sidebar-info></aside>
-    <div style="float: left; margin: 0 30px;">
-            <product-search-input (sendInputString)="getNameFilter($event)"></product-search-input>
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
-                <ng-container matColumnDef="card">
-                    <th mat-header-cell *matHeaderCellDef style="font-weight:bold; font-size: 25px; color: black;"> Product </th>
-                    <td mat-cell *matCellDef="let p"> 
-                        <Xproduct-info [product]="p" (sendProductId)="onDeleteAction($event)">
-                        </Xproduct-info>
-                    </td>
-                  </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-                <mat-paginator
-                        #paginator
-                        [pageSize]="5"
-                        [pageSizeOptions]="[1,3,5]"
-                        aria-label="Select page">
-                </mat-paginator>
+<div class="content-div">
+    <aside class="sidebar">
+        <product-IOOS-comp (sendOutOfStock)="getIncludeOutOfStock($event)"></product-IOOS-comp>
+        <product-price-slider-comp [maxProductPrice]="maxProductPrice"
+            (sendProductPriceFilter)="getPriceFilter($event)"></product-price-slider-comp>
+        <XCategory-sidebar-info (sendCategories)="getCategoriesFilter($event)"></XCategory-sidebar-info>
+    </aside>
+    <div class="product-container">
+        <product-search-input (sendInputString)="getNameFilter($event)"></product-search-input>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
+            <ng-container matColumnDef="card">
+                <th mat-header-cell *matHeaderCellDef class="mat-table-th"> Product </th>
+                <td mat-cell *matCellDef="let p">
+                    <Xproduct-info [product]="p" (sendProductId)="onDeleteAction($event)">
+                    </Xproduct-info>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator #paginator
+            (page)="paginatorEvent = $event; loadProducts()"
+            [pageSizeOptions]="[5,3,1]" aria-label="Select page">
+        </mat-paginator>
     </div>
 </div>

@@ -1,5 +1,5 @@
-<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" *ngIf="dataSource && dataSource.data">
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" *ngIf="categoriesLoaded">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding >
       <button mat-icon-button disabled></button>
       <mat-checkbox class="checklist-leaf-node"
                     [checked]="checklistSelection.isSelected(node)"
@@ -7,14 +7,15 @@
     </mat-tree-node>
 
     <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-      <button mat-icon-button matTreeNodeToggle
+      <button id="node-{{node.name}}" mat-icon-button matTreeNodeToggle
               [attr.aria-label]="'Toggle ' + node.name">
         <mat-icon class="mat-icon-rtl-mirror">
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-        </mat-icon>
+                  </mat-icon>
       </button>
       <mat-checkbox 
-      [checked]="checklistSelection.isSelected(node)"
+      [checked]="descendantsAllSelected(node)"
+
       (change)="todoItemSelectionToggle(node)"  [color]="'primary'">{{node.name}}</mat-checkbox>
     </mat-tree-node>
   </mat-tree>

@@ -7,20 +7,26 @@
     </aside>
     <div class="product-container">
         <product-search-input (sendInputString)="getNameFilter($event)"></product-search-input>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;"
+            *ngIf="dataSource && dataSource.data">
             <ng-container matColumnDef="card">
-                <th mat-header-cell *matHeaderCellDef class="mat-table-th"> Product </th>
+                <th mat-header-cell *matHeaderCellDef class="mat-table-th">
+                    <span>Product</span>
+                    <button mat-icon-button color="primary" class="add-button" (click)="openDialog()">
+                        <mat-icon aria-hidden="false" class="add-button-icon" aria-label="Example home icon">add
+                        </mat-icon>
+                    </button>
+                </th>
                 <td mat-cell *matCellDef="let p">
-                    <Xproduct-info [product]="p" (sendProductId)="onDeleteAction($event)">
+                    <Xproduct-info [product]="p" (sendProductId)="deleteProduct($event)">
                     </Xproduct-info>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator #paginator
-            (page)="paginatorEvent = $event; loadProducts()"
-            [pageSizeOptions]="[5,3,1]" aria-label="Select page">
+        <mat-paginator #paginator (page)="paginatorEvent = $event; loadProducts()" [pageSizeOptions]="[5,3,1]"
+            aria-label="Select page">
         </mat-paginator>
     </div>
 </div>

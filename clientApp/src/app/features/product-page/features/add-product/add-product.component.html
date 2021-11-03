@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>{{data?'Edit ': 'Add '}} Product</h1>
+<div mat-dialog-content>
+    <mat-form-field appearance="fill" class="product-dialog-form">
+        <mat-label> Name</mat-label>
+        <input matInput [value]="data?.productName" [(ngModel)]="data.productName">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="product-dialog-form">
+        <mat-label>Price</mat-label>
+        <input matInput type="number" [value]="data?.price" [(ngModel)]="data.price">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="product-dialog-form">
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" [value]="data?.quantityInStock" [(ngModel)]="data.quantityInStock">
+    </mat-form-field>
+    <mat-card class="category-card">
+        <mat-card-subtitle>Categories</mat-card-subtitle>
+        <XCategory-sidebar-info #categoryinfo [categories]="data?.categories" (sendEditCategories)="setSelectedCategories($event)" ></XCategory-sidebar-info>
+    </mat-card>
+    
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="categoryinfo.sendEditedCategories()"  [mat-dialog-close]="data" cdkFocusInitial>Confirm</button>
+    <button mat-button (click)="close()">Cancel</button>
+</div>

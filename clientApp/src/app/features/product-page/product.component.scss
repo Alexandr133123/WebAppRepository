@@ -2,6 +2,7 @@
     width: 250px; 
     margin: 0px 1px; 
     float:left;
+    margin-top: 11.5px;
 }
 .content-div{
     margin:10px 10px; 
@@ -11,9 +12,16 @@
 .product-container{
     float: left; 
     margin: 0 30px;
+    
 }
 .mat-table-th{
     font-weight:bold; 
     font-size: 25px; 
     color: black;
+}
+.add-button{
+
+    float: right;
+    transform: scale(1.38);
+
 }

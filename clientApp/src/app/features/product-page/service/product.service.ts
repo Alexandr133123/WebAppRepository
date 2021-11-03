@@ -17,7 +17,11 @@ export class ProductService {
 
     constructor(private http: HttpClient) { }
 
-    public GetFilteredProducts(categories: string[], productName: string, priceTo: number = 0, includeOutOfStock: boolean, pageNumber: number | undefined, pageSize: number | undefined = 5) {
+    public getFilteredProducts(categories: string[],
+        productName: string, priceTo: number = 0,
+        includeOutOfStock: boolean, pageNumber: number | undefined,
+        pageSize: number | undefined = 5) {
+
         let params = new HttpParams();
         if (pageNumber != undefined && pageNumber >= 0) {
             params = params.append(`pageNumber`, pageNumber);
@@ -42,6 +46,19 @@ export class ProductService {
         return this.http.get(this.url, {
             params: params
         });
+
+    }
+    public putEditedProduct(product: Product) {
+
+        return this.http.put(this.url, product);
+    }
+    public addProduct(product: Product) {
+
+        return this.http.post(this.url, product);
+    }
+    public deleteProduct(id: number) {
+
+        return this.http.delete(this.url + '/' + id);
     }
 
 }

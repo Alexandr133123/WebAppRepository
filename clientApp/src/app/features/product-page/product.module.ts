@@ -17,6 +17,11 @@ import { ProductPriceSliderComponent } from "./features/category-sidebar-info/fe
 import { IncludeOutOfStockComponent } from "./features/category-sidebar-info/features/product-includeOutOfStock-checkbox/product-IOOS.components";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatTableModule } from "@angular/material/table";
+import { MatProgressSpinnerModule} from "@angular/material/progress-spinner"
+import { AddProductComponent } from "./features/add-product/add-product.component";
+import {MatDialogModule} from "@angular/material/dialog";
+import { MatSelectModule } from "@angular/material/select";
+import { MdePopoverModule } from "@material-extended/mde";
 @NgModule({
     imports:[
         BrowserModule,
@@ -30,7 +35,11 @@ import { MatTableModule } from "@angular/material/table";
         MatCheckboxModule,
         MatSliderModule,
         MatPaginatorModule,
-        MatTableModule
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatDialogModule,
+        MatSelectModule,
+        MdePopoverModule
     ],
     declarations:[
         ProductComponent,
@@ -38,7 +47,8 @@ import { MatTableModule } from "@angular/material/table";
         CategorySidebarInfoComponent,
         ProductSearchInputComponent,
         ProductPriceSliderComponent,
-        IncludeOutOfStockComponent
+        IncludeOutOfStockComponent,
+        AddProductComponent
     
     ],
     

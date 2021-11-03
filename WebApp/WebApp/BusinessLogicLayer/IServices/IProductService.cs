@@ -8,7 +8,9 @@ namespace WebApp.BusinessLogicLayer.IServices
 {
     public interface IProductService
     {
-        IQueryable<Product> GetProducts(Filters filters);
-        decimal GetMaxPrice();
+        ProductResponse GetProducts(Filters filters, ProductParameters parameters);
+        void UpdateProducts(Product product);
+        void AddProduct(Product product);
+        void DeleteProduct(int id);
     }
 }

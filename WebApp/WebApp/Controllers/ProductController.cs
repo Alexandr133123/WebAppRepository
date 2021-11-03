@@ -6,8 +6,9 @@ using System.Linq;
 using WebApp.BusinessLogicLayer.IServices;
 using AutoMapper;
 using WebApp.PresentationLayer.DTO;
-using WebApp.PresentationLayer.Wrapper;
+using WebApp.PresentationLayer.DTO;
 using Microsoft.Extensions.Configuration;
+using WebApp.DataAccessLayer.Model;
 
 namespace WebApp.Controllers
 {
@@ -30,15 +31,30 @@ namespace WebApp.Controllers
         public IActionResult GetFilteredProducts([FromQuery] Filters filters, [FromQuery] ProductParameters parameners)
         {
             parameners.MaxPageSize = Int32.Parse(configuration["Pagination:MaxPageSize"]);
-            var query = service.GetProducts(filters);
-            var resultCount = query.Count();
-            query = query
-            .Skip((parameners.PageNumber * parameners.PageSize))
-            .Take(parameners.PageSize);
-            var result = mapper.Map<List<ViewProduct>>(query);
-            decimal maxPrice = service.GetMaxPrice();
-            return Ok(new ProductResponse(result, resultCount,maxPrice));
+            var serviceResult = service.GetProducts(filters, parameners);
+            var mappedProducts = mapper.Map<ViewProductResponse>(serviceResult);
+            return Ok(mappedProducts);
         }
 
+        [HttpPut]
+        public IActionResult UpdateProduct(ViewProduct viewProduct)
+        {
+                var product = mapper.Map<Product>(viewProduct);
+                service.UpdateProducts(product);            
+                return Ok();            
+        }
+        [HttpPost]
+        public IActionResult AddProduct(ViewProduct viewProduct)
+        {
+            var product = mapper.Map<Product>(viewProduct);
+            service.AddProduct(product);
+            return Ok();
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            service.DeleteProduct(id);
+            return Ok();
+        }
     }
 }

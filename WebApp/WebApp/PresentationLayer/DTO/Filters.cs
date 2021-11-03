@@ -23,6 +23,8 @@ namespace WebApp.PresentationLayer.DTO
 
         [FromQuery(Name ="productName")]
         public string ProductName { get; set; }
+        [FromQuery(Name ="doesNeedChildCategories")]
+        public bool DoesNeedChildCategories { get; set; }
 
     }
 }

@@ -17,7 +17,6 @@ using WebApp.BusinessLogicLayer.Services;
 using WebApp.PresentationLayer.MapperConfig;
 using Microsoft.EntityFrameworkCore.Proxies;
 using AutoMapper;
-using WebApp.PresentationLayer.Wrapper;
 using WebApp.PresentationLayer.DTO;
 
 namespace WebApp

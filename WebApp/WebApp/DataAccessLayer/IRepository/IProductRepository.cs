@@ -11,6 +11,9 @@ namespace WebApp.DataAccessLayer.IRepository
     {
         decimal GetMaxPrice();
         IQueryable<Product> GetProducts(Filters filters);
+        void UpdateProduct(Product product);
+        void AddProduct(Product product);
+        void DeleteProduct(int id);
 
     }
 }

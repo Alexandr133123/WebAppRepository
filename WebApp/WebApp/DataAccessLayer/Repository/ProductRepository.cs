@@ -24,6 +24,33 @@ namespace WebApp.DataAccessLayer.Repository
 
         }
 
+        public void UpdateProduct(Product product)
+        {            
+            var productQuery = db.Products.Include(p => p.Categories).Single(dbp => dbp.PK_ProductId == product.PK_ProductId);
+            var categoryQuery = db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToList();
+            productQuery.Categories = categoryQuery;
+            productQuery.LastModified = DateTime.UtcNow;
+            productQuery.Price = product.Price;
+            productQuery.ProductName = product.ProductName;
+            productQuery.QuantityInStock = product.QuantityInStock;
+            db.SaveChanges();         
+            
+        }
+
+        public void AddProduct(Product product)
+        {
+            var categoryQuery = db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToList();
+            product.Categories = categoryQuery;
+            db.Add(product);
+            db.SaveChanges();
+        }
+        public void DeleteProduct(int id)
+        {
+            var product = db.Products.Include(p => p.Categories).Single(p => p.PK_ProductId == id);
+            db.Remove(product);
+            db.SaveChanges();
+        }
+
         public decimal GetMaxPrice()
         {
             return db.Products.Max(p => p.Price); 
@@ -58,9 +85,10 @@ namespace WebApp.DataAccessLayer.Repository
             }
 
             var result = query
+           .Include(p => p.Categories)
            .AsNoTracking();
             return result;
-        }
+        }      
 
     }
 }

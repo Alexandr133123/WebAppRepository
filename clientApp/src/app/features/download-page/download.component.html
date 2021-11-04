@@ -1,0 +1,24 @@
+<div class="content-div">
+    
+        <aside class="sidebar">
+            <mat-form-field appearance="fill">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="Start date" [(ngModel)]="dateFrom">
+                  <input matEndDate placeholder="End date" [(ngModel)]="dateTo">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+              <mat-radio-group aria-label="Select an option" color="primary" [(ngModel)]="groupByMode">
+                <mat-radio-button value="1" class="radio-button">Group by Last Modified</mat-radio-button>
+                <mat-radio-button value="2" class="radio-button">Group by Category</mat-radio-button>
+                <mat-radio-button value="3" class="radio-button">Group by Price Range</mat-radio-button>
+              </mat-radio-group>  
+        <XCategory-info #categoryinfo (sendCategories)="sendData($event)"></XCategory-info>
+        <mat-checkbox class="example-margin" [color]="'primary'" [(ngModel)]="includeOutOfStock">Include Out Of Stock</mat-checkbox>
+        </aside>
+        <div class="category-container">
+            <button mat-raised-button color="primary" class="download-button" (click)="categoryinfo.sendSelectedCategoriesId()">Download</button>
+        </div>
+</div>

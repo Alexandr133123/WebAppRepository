@@ -5,9 +5,9 @@ import { FlatTreeControl } from "@angular/cdk/tree";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
 import { CategoryService } from "./service/category.service";
 import { SelectionModel } from '@angular/cdk/collections';
-import { FilterEventService } from "../../service/filter-event.service";
+import { FilterEventService } from "../../features/product-page/service/filter-event.service";
 import { first } from "rxjs/operators";
-import { LEADING_TRIVIA_CHARS } from "@angular/compiler/src/render3/view/template";
+import { MatTree } from "@angular/material/tree";
 
 export class FlatTreeNode {
   expandable: boolean;
@@ -18,10 +18,10 @@ export class FlatTreeNode {
 }
 
 @Component({
-  selector: 'XCategory-sidebar-info',
-  templateUrl: './category-sidebar-info.component.html',
+  selector: 'XCategory-info',
+  templateUrl: './category-info.component.html',
 })
-export class CategorySidebarInfoComponent implements OnInit {
+export class CategoryInfoComponent implements OnInit {
   private categoryFiltersString: string[];
   private selectedEditCategories: Category[];
   public flatNodeMap = new Map<FlatTreeNode, Category>();
@@ -55,8 +55,11 @@ export class CategorySidebarInfoComponent implements OnInit {
 
     this.filterEvent.searchInvoked.subscribe(e => this.sendCategories.emit(this.setFilters()));
   }
-
-  public sendEditedCategories() {
+  public sendSelectedCategoriesId(){
+    var categoriesSelected = this.checklistSelection.selected.map(n => n.categoryId.toString()); 
+    this.sendCategories.emit(categoriesSelected);
+  }
+  private sendEditedCategories() {
     this.sendEditCategories.emit(this.selectedEditCategories);
   }
 
@@ -71,7 +74,6 @@ export class CategorySidebarInfoComponent implements OnInit {
 
   public todoItemSelectionToggle(node: FlatTreeNode): void {
     this.checklistSelection.toggle(node);
-
       this.categoryChanges(node);
   
 
@@ -159,11 +161,11 @@ export class CategorySidebarInfoComponent implements OnInit {
 
   private addCategoryChanges(selectedCategory: Category) {
     this.selectedEditCategories.push(selectedCategory);
-    console.log(this.selectedEditCategories);
+    this.sendEditedCategories();
   }
   private deleteCategoryChanges(selectedCategory: Category) {
     this.selectedEditCategories = this.selectedEditCategories.filter((c: Category) => !(selectedCategory.categoryName === c.categoryName));
-    console.log(this.selectedEditCategories);
+    this.sendEditedCategories();
   }
 
   private transformer(node: Category, level: number):FlatTreeNode {
@@ -190,20 +192,22 @@ export class CategorySidebarInfoComponent implements OnInit {
       let rootCategories = this.checklistSelection.selected.filter(f => f.level === i);
 
       rootCategories.forEach((d: FlatTreeNode) => {
-        if(d.expandable === true){
-        var descendants = this.treeControl.getDescendants(d);
-        var descAllSelected = descendants.length > 0 && descendants.every(child => {
-          return this.checklistSelection.isSelected(child);
-        });
-
-        if (descAllSelected) {
-          let childCategories = selectedCategories.filter(pc => pc.parentCategoryId == d.categoryId);
-          selectedCategories = selectedCategories.filter((el) => !childCategories.includes(el));
-        }else{
-          selectedCategories = selectedCategories.filter((el: FlatTreeNode) => !(el.categoryId === d.categoryId));
-          this.isAllChildNodesSelected(d, selectedCategories);   
-        }
-      }
+       
+            if(d.expandable === true){
+              var descendants = this.treeControl.getDescendants(d);
+              var descAllSelected = descendants.length > 0 && descendants.every(child => {
+                return this.checklistSelection.isSelected(child);
+              });
+      
+              if (descAllSelected) {
+                let childCategories = selectedCategories.filter(pc => pc.parentCategoryId == d.categoryId);
+                selectedCategories = selectedCategories.filter((el) => !childCategories.includes(el));
+              }else{
+                selectedCategories = selectedCategories.filter((el: FlatTreeNode) => !(el.categoryId === d.categoryId));
+                this.isAllChildNodesSelected(d, selectedCategories);   
+              }
+            }
+          
       });
     }
 
@@ -217,7 +221,7 @@ export class CategorySidebarInfoComponent implements OnInit {
 
   private isAllChildNodesSelected(node: FlatTreeNode, selectedCategories: FlatTreeNode[]): void {
 
-    if (selectedCategories.find(pc => pc.parentCategoryId === node.categoryId)) {
+    if (selectedCategories.some(pc => pc.parentCategoryId === node.categoryId)) {
       let childCategories = selectedCategories.filter(pc => pc.parentCategoryId == node.categoryId);
       childCategories.forEach((n: FlatTreeNode) => {
         if(n.expandable === true){

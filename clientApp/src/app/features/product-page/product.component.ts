@@ -9,7 +9,6 @@ import { first } from 'rxjs/operators';
 import { ProductResponse } from 'src/app/shared/models/ProductResponse';
 import { MatDialog } from '@angular/material/dialog';
 import { AddProductComponent } from './features/add-product/add-product.component';
-import { Category } from 'src/app/shared/models/Category';
 @Component({
   selector: 'product-comp',
   templateUrl: './product.component.html',

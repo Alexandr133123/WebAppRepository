@@ -48,7 +48,7 @@ export class ProductService {
         });
 
     }
-    public putEditedProduct(product: Product) {
+    public updateProduct(product: Product) {
 
         return this.http.put(this.url, product);
     }

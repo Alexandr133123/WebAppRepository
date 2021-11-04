@@ -1,14 +1,21 @@
 .sidebar{
     width: 250px; 
     margin: 0px 1px; 
-    float:left;
+    // float:left;
     margin-top: 11.5px;
 }
-.content-div{
-    margin:10px 10px; 
-    padding: 20px 200px; 
-    display: inline-block;
+
+.content-div {
+    display: block;
 }
+
+.content-inner-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
 .product-container{
     float: left; 
     margin: 0 30px;

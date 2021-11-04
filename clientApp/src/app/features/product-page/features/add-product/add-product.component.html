@@ -1,25 +1,31 @@
-<h1 mat-dialog-title>{{data?'Edit ': 'Add '}} Product</h1>
-<div mat-dialog-content>
+<h1 mat-dialog-title>{{data.productName?'Edit ': 'Add '}} Product</h1>
+<label style=" color: rgba(0,0,0,.54);">* - Required Fields</label>
+<div mat-dialog-content [formGroup]="productForm">
     <mat-form-field appearance="fill" class="product-dialog-form">
-        <mat-label> Name</mat-label>
-        <input matInput [value]="data?.productName" [(ngModel)]="data.productName">
+        <mat-label> Name *</mat-label>
+        <input matInput formControlName="productName">
     </mat-form-field>
     <mat-form-field appearance="fill" class="product-dialog-form">
-        <mat-label>Price</mat-label>
-        <input matInput type="number" [value]="data?.price" [(ngModel)]="data.price">
+        <mat-label>Price *</mat-label>
+        <input matInput type="text" formControlName="price">
     </mat-form-field>
     <mat-form-field appearance="fill" class="product-dialog-form">
-        <mat-label>Amount</mat-label>
-        <input matInput type="number" [value]="data?.quantityInStock" [(ngModel)]="data.quantityInStock">
+        <mat-label>Amount *</mat-label>
+        <input matInput type="text" formControlName="quantityInStock">
     </mat-form-field>
-    <mat-card class="category-card">
-        <mat-card-subtitle>Categories</mat-card-subtitle>
-        <XCategory-sidebar-info #categoryinfo [categories]="data?.categories" (sendEditCategories)="setSelectedCategories($event)" ></XCategory-sidebar-info>
+    <mat-card class="category-card" [style.border-color]="isNotSelected?'#f44336':'gray'">
+        <mat-card-subtitle>Categories *</mat-card-subtitle>
+        <XCategory-info #categoryinfo [categories]="data?.categories"
+            (sendEditCategories)="isCategoriesSelected($event)"></XCategory-info>
     </mat-card>
-    
+    <div class="alert" *ngIf="isNotSelected">
+        <h4>Product Must Have At Least One Category</h4>
+    </div>
+
 
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="categoryinfo.sendEditedCategories()"  [mat-dialog-close]="data" cdkFocusInitial>Confirm</button>
+    <button mat-button (click)="setSelectedCategories()" cdkFocusInitial
+        [disabled]="productForm.invalid">Confirm</button>
     <button mat-button (click)="close()">Cancel</button>
 </div>

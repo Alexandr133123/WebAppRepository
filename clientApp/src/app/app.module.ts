@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { HomeModule } from './features/home-page/home.module';
+import { DownloadModule } from './features/download-page/download.module';
 import { ProductModule } from './features/product-page/product.module';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -14,7 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserAnimationsModule,
     ProductModule,
     HttpClientModule,
-    HomeModule,
+    DownloadModule,
     AppRoutingModule,
   ],
   declarations: [

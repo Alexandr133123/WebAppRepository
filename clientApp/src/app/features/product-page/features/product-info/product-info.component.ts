@@ -25,7 +25,7 @@ export class ProductInfoComponent {
         });
         dialogRef.afterClosed().subscribe((result: Product) => {
             if(result){                
-                this.productService.putEditedProduct(result).subscribe();
+                this.productService.updateProduct(result).subscribe();
             }
         });
     }

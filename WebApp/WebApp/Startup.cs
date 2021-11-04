@@ -40,8 +40,10 @@ namespace WebApp
             services.AddDbContext<ApplicationContext>(options =>
                        options.UseSqlServer(connection));
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProcedureManager, ProcedureManager>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IDownloadService, DownloadService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IMapper>((s) => MapperConfigManager.GetConfig().CreateMapper());
             services.AddControllers();

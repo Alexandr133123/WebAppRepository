@@ -46,8 +46,8 @@ namespace WebApp.DataAccessLayer.Repository
         }
         public void DeleteProduct(int id)
         {
-            var product = db.Products.Include(p => p.Categories).Single(p => p.PK_ProductId == id);
-            db.Remove(product);
+            var product = db.Products.Include(p => p.Categories).Single(p => p.PK_ProductId == id);           
+            db.Remove(product);            
             db.SaveChanges();
         }
 

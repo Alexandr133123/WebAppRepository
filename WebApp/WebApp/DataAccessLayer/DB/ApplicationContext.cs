@@ -7,49 +7,52 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Data.SqlClient;
+using WebApp.PresentationLayer.DTO;
 
 namespace WebApp.DataAccessLayer.DB
 {
     public partial class ApplicationContext : DbContext
     {
-      
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
             Database.EnsureCreated();
         }
 
-    
 
 
-        public  DbSet<Category> Categories { get; set; }
-        public  DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
 
-                
-           
-                modelBuilder.Entity<Category>(entity =>
-                {
-                  
-                    entity.ToTable(nameof(Category));
-                    entity.HasKey(e => e.PK_CategoryId);
-                    entity.HasOne(d => d.FK_ParentCategory)
-                        .WithMany(p => p.InverseFkParentCategory)
-                        .HasForeignKey(d => d.FK_ParentCategoryId);
-                        
-                        
+            modelBuilder.Entity<ProductGroupByLastModified>(entity => {
+                entity.HasNoKey();
+            });
+            modelBuilder.Entity<ProductGroupByCategory>(entity => {
+                entity.HasNoKey();
+            });
+            modelBuilder.Entity<ProductGroupByPrice>(entity => {
+                entity.HasNoKey();
+            });
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.ToTable(nameof(Category));
+                entity.HasKey(e => e.PK_CategoryId);
+                entity.HasOne(d => d.FK_ParentCategory)
+                    .WithMany(p => p.InverseFkParentCategory)
+                    .HasForeignKey(d => d.FK_ParentCategoryId);
 
-                    entity
-                    .HasMany(d => d.Products)
-                    .WithMany(p => p.Categories)
-                    .UsingEntity<Dictionary<string, object>>("ProductCategory",
-                        j => j.HasOne<Product>().WithMany().HasForeignKey("PFK_ProductId"),
-                        j => j.HasOne<Category>().WithMany().HasForeignKey("PFK_CategoryId"),
-                        j => j.ToTable("ProductCategory"));
-                });
+                entity
+                .HasMany(d => d.Products)
+                .WithMany(p => p.Categories)
+                .UsingEntity<Dictionary<string, object>>("ProductCategory",
+                    j => j.HasOne<Product>().WithMany().HasForeignKey("PFK_ProductId"),
+                    j => j.HasOne<Category>().WithMany().HasForeignKey("PFK_CategoryId"),
+                    j => j.ToTable("ProductCategory"));
+            });
 
             modelBuilder.Entity<Product>(entity =>
             {

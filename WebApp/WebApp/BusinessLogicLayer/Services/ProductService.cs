@@ -25,21 +25,19 @@ namespace WebApp.BusinessLogicLayer.Services
         {
             var query = repository.GetProducts(filters);
             var resultCount = query.Count();
-            var testQuery = query
+            var products = query
                 .Skip((parameters.PageNumber * parameters.PageSize))
                 .Take(parameters.PageSize).ToList();
 
-            while (testQuery.Count() == 0)
+            if(products.Count() == 0 && parameters.PageNumber > 0)
             {
-                parameters.PageNumber = parameters.PageNumber - 1;
-                testQuery = query
-                .Skip((parameters.PageNumber * parameters.PageSize))
+                products = query                
                 .Take(parameters.PageSize).ToList();
-
+                parameters.PageNumber = 0;
             }         
             decimal maxPrice = repository.GetMaxPrice();
 
-            return (new ProductResponse(testQuery, resultCount, maxPrice, parameters.PageNumber));
+            return (new ProductResponse(products, resultCount, maxPrice, parameters.PageNumber));
         }
         public void UpdateProducts(Product product)
         {

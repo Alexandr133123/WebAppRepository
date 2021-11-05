@@ -44,6 +44,7 @@ namespace WebApp.PresentationLayer.MapperConfig
               .ForMember(vc => vc.InverseFkParentCategory, c => c.MapFrom(pc => pc.ParentCategory))
               .ForMember(vc => vc.FK_ParentCategoryId, c => c.MapFrom(pc => pc.ParentCategoryId))
               .ForMember(vc => vc.FK_ParentCategory, m => m.Ignore());
+            
 
         }
 

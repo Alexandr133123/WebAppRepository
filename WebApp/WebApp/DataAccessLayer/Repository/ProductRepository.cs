@@ -55,7 +55,10 @@ namespace WebApp.DataAccessLayer.Repository
         {
             return db.Products.Max(p => p.Price); 
         }
-
+        public IQueryable<Product> GetProducts()
+        {
+            return db.Products;
+        }
         public  IQueryable<Product> GetProducts(Filters filters)
         {
             IQueryable<Product> query = db.Products;

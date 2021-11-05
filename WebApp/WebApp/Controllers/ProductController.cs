@@ -56,5 +56,11 @@ namespace WebApp.Controllers
             service.DeleteProduct(id);
             return Ok();
         }
+        [HttpGet]
+        [Route("chart")]
+        public IActionResult GetChartData()
+        {
+            return Ok(service.GetChartChartData());
+        }
     }
 }

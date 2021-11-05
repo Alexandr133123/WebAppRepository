@@ -12,5 +12,6 @@ namespace WebApp.BusinessLogicLayer.IServices
         void UpdateProducts(Product product);
         void AddProduct(Product product);
         void DeleteProduct(int id);
+        ChartDTO GetChartChartData();
     }
 }

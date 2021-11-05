@@ -52,5 +52,27 @@ namespace WebApp.BusinessLogicLayer.Services
         {
             repository.DeleteProduct(id);
         }
+        public ChartDTO GetChartChartData()
+        {
+            var products = repository.GetProducts().ToList();
+            List<decimal> productPrice = new List<decimal>();
+            List<int> productCount = new List<int>();
+            foreach(Product p in products)
+            {
+                if (!productPrice.Contains(p.Price))
+                {
+                    productPrice.Add(p.Price);           
+                }
+            }
+            productPrice.Sort();
+            foreach(decimal price in productPrice)
+            {
+                var currentPriceProductCount = products.Where(ap => ap.Price == price).Select(ap => ap.QuantityInStock);
+
+                productCount.Add(currentPriceProductCount.Sum());
+            }
+            return new ChartDTO(productPrice, productCount);
+        }
+        
     }
 }

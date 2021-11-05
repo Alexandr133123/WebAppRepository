@@ -14,6 +14,7 @@ namespace WebApp.DataAccessLayer.IRepository
         void UpdateProduct(Product product);
         void AddProduct(Product product);
         void DeleteProduct(int id);
+        IQueryable<Product> GetProducts();
 
     }
 }

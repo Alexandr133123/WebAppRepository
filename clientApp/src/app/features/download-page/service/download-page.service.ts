@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -9,7 +10,7 @@ import { environment } from "src/environments/environment";
 
 export class DownloadPageService{
     private url = environment.apiUrl + 'download';
-
+  
     constructor(private http: HttpClient){ }
 
     public sendDownloadFilters( 

@@ -1,0 +1,19 @@
+
+  <div style="text-align:center" *ngIf="chartOptions">
+    <apx-chart
+    [series]= "chartOptions.series"
+    [fill]="chartOptions.fill"
+    [stroke]="chartOptions.stroke"
+    [title]="chartOptions.title"
+    [xaxis]="chartOptions.xaxis"
+    [dataLabels]="chartOptions.dataLabels"
+    [chart]="chartOptions.chart"
+    [labels]="chartOptions.labels"
+    [responsive]="chartOptions.responsive"
+    ></apx-chart>
+  </div>
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle #lineChart (click)="chartModeSelect(lineChart.value)" value="line">Line</mat-button-toggle>
+    <mat-button-toggle #barChart (click)="chartModeSelect(barChart.value)" value="bar">Bar</mat-button-toggle>
+    <mat-button-toggle #pieChart (click)="chartModeSelect(pieChart.value)" value="pie">Pie</mat-button-toggle>
+  </mat-button-toggle-group>

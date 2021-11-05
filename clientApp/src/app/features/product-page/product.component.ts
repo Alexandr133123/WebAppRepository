@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ProductService } from './service/product.service';
+import { ProductService } from '../../shared/service/product.service';
 import { Product } from '../../shared/models/Product';
 import { FilterEventService } from './service/filter-event.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';

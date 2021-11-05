@@ -5,7 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { EventEmitter } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { AddProductComponent } from "../add-product/add-product.component";
-import { ProductService } from "../../service/product.service";
+import { ProductService } from "../../../../shared/service/product.service";
 
 @Component({
     selector: 'Xproduct-info',

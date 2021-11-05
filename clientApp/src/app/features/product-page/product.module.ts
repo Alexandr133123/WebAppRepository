@@ -38,7 +38,8 @@ import { CategoryInfoModule } from "src/app/shared/category-info/category-info.m
         MatDialogModule,
         MatSelectModule,
         CategoryInfoModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        
     ],
     declarations:[
         ProductComponent,

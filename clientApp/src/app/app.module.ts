@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DownloadModule } from './features/download-page/download.module';
 import { ProductModule } from './features/product-page/product.module';
 import { AppRoutingModule } from './app-routing.module';
+import { ChartPageModule } from './features/chart-page/chart-page.module';
 
 @NgModule({
 
@@ -16,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     DownloadModule,
     AppRoutingModule,
+    ChartPageModule
   ],
   declarations: [
     AppComponent

@@ -60,5 +60,7 @@ export class ProductService {
 
         return this.http.delete(this.url + '/' + id);
     }
-
+    public getProductChartInfo(){
+        return this.http.get(this.url + '/chart');
+    }
 }

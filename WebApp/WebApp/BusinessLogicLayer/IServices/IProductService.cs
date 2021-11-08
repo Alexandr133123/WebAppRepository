@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,8 +11,10 @@ namespace WebApp.BusinessLogicLayer.IServices
     {
         ProductResponse GetProducts(Filters filters, ProductParameters parameters);
         void UpdateProducts(Product product);
-        void AddProduct(Product product);
+        void AddProduct(Product product,IFormFile uploadedFile);
+        void UpdateProducts(Product product, IFormFile uploadedFile);
         void DeleteProduct(int id);
         ChartDTO GetChartChartData();
+        byte[] SetProductImage(string relativePath);
     }
 }

@@ -11,6 +11,7 @@ using System.Collections;
 using System;
 using Serilog;
 using WebApp.PresentationLayer;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.DataAccessLayer.Repository
 {
@@ -35,13 +36,37 @@ namespace WebApp.DataAccessLayer.Repository
             productQuery.Price = product.Price;
 
             var prevProductName = productQuery.ProductName;
-
             productQuery.ProductName = product.ProductName;
             productQuery.QuantityInStock = product.QuantityInStock;
             db.SaveChanges();
             var categoryString = string.Join(", ",productQuery.Categories.Select(c => c.CategoryName));
             string logString = String.Format("Product: {0} Updated =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
                 prevProductName,productQuery.ProductName,productQuery.Price,productQuery.QuantityInStock,productQuery.LastModified,categoryString);
+            Log.Information(logString);
+        }
+        public void UpdateProduct(Product product, IFormFile uploadedFile)
+        {
+            var productQuery = db.Products.Include(p => p.Categories).Include(p => p.Image).Single(dbp => dbp.PK_ProductId == product.PK_ProductId);
+            if(productQuery.Image == null)
+            {
+                productQuery.Image = new ProductImage(productQuery.PK_ProductId, uploadedFile.FileName);
+            }
+            else
+            {
+                productQuery.Image.ImageRelativePath = uploadedFile.FileName;
+            }
+            var categoryQuery = db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToList();
+            productQuery.Categories = categoryQuery;
+            productQuery.LastModified = DateTime.UtcNow;
+            productQuery.Price = product.Price;
+
+            var prevProductName = productQuery.ProductName;
+            productQuery.ProductName = product.ProductName;
+            productQuery.QuantityInStock = product.QuantityInStock;
+            db.SaveChanges();
+            var categoryString = string.Join(", ", productQuery.Categories.Select(c => c.CategoryName));
+            string logString = String.Format("Product: {0} Updated =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
+                prevProductName, productQuery.ProductName, productQuery.Price, productQuery.QuantityInStock, productQuery.LastModified, categoryString);
             Log.Information(logString);
         }
 
@@ -56,9 +81,22 @@ namespace WebApp.DataAccessLayer.Repository
                product.ProductName, product.ProductName, product.Price, product.QuantityInStock, product.LastModified, categoryString);
             Log.Information(logString);
         }
+        public void AddProduct(Product product, IFormFile uploadedFile)
+        {
+            var categoryQuery = db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToList();
+            product.Categories = categoryQuery;
+            product.Image = new ProductImage(product.PK_ProductId, uploadedFile.FileName);
+            db.Add(product);
+            db.SaveChanges();
+            var categoryString = string.Join(", ", product.Categories.Select(c => c.CategoryName));
+            string logString = String.Format("Product: {0} Added =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
+               product.ProductName, product.ProductName, product.Price, product.QuantityInStock, product.LastModified, categoryString);
+            Log.Information(logString);
+
+        }
         public void DeleteProduct(int id)
         {
-            var product = db.Products.Include(p => p.Categories).Single(p => p.PK_ProductId == id);           
+            var product = db.Products.Include(p => p.Categories).Include(p => p.Image).Single(p => p.PK_ProductId == id);           
             db.Remove(product);            
             db.SaveChanges();
             Log.Information($"Product Deleted => {product.ProductName}");
@@ -102,6 +140,7 @@ namespace WebApp.DataAccessLayer.Repository
 
             var result = query
            .Include(p => p.Categories)
+           .Include(p => p.Image)
            .AsNoTracking();
             return result;
         }      

@@ -24,9 +24,10 @@ namespace WebApp.DataAccessLayer.DB
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
 
             modelBuilder.Entity<ProductGroupByLastModified>(entity => {
                 entity.HasNoKey();
@@ -53,11 +54,22 @@ namespace WebApp.DataAccessLayer.DB
                     j => j.HasOne<Category>().WithMany().HasForeignKey("PFK_CategoryId"),
                     j => j.ToTable("ProductCategory"));
             });
+            modelBuilder.Entity<ProductImage>(entity =>
+            {
+                entity.ToTable(nameof(ProductImage));
+                entity.HasKey(e => e.PFK_ImageId);
+            });
 
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable(nameof(Product));
                 entity.HasKey(e => e.PK_ProductId);
+
+                entity
+                .HasOne(p => p.Image)
+                .WithOne(i => i.Product)
+                .HasForeignKey<ProductImage>(i => i.PFK_ImageId);
+                
             });
 
 

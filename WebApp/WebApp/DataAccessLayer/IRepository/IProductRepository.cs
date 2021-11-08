@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +13,9 @@ namespace WebApp.DataAccessLayer.IRepository
         decimal GetMaxPrice();
         IQueryable<Product> GetProducts(Filters filters);
         void UpdateProduct(Product product);
+        void UpdateProduct(Product product, IFormFile uploadedFile);
         void AddProduct(Product product);
+        void AddProduct(Product product, IFormFile uploadedFile);
         void DeleteProduct(int id);
         IQueryable<Product> GetProducts();
 

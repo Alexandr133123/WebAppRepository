@@ -1,12 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WebApp.DataAccessLayer.DB;
@@ -15,11 +10,7 @@ using WebApp.DataAccessLayer.Repository;
 using WebApp.BusinessLogicLayer.IServices;
 using WebApp.BusinessLogicLayer.Services;
 using WebApp.PresentationLayer.MapperConfig;
-using Microsoft.EntityFrameworkCore.Proxies;
 using AutoMapper;
-using WebApp.PresentationLayer.DTO;
-using WebApp.PresentationLayer;
-using Z.EntityFramework.Plus;
 
 namespace WebApp
 {

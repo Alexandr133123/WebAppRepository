@@ -12,6 +12,7 @@ namespace WebApp.PresentationLayer.DTO
         public string ProductName { get; set; }
         public decimal Price { get; set; }
         public int QuantityInStock { get; set; }
+        public byte[] Image { get; set; }
         public ICollection<ViewCategory> Categories { get; set; }
 
 

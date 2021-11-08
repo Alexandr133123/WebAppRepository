@@ -32,21 +32,31 @@ namespace WebApp.Controllers
             parameners.MaxPageSize = Int32.Parse(configuration["Pagination:MaxPageSize"]);
             var serviceResult = service.GetProducts(filters, parameners);
             var mappedProducts = mapper.Map<ViewProductResponse>(serviceResult);
+            foreach(ViewProduct vp in mappedProducts.Products)
+            {
+                if(serviceResult.Products.Find(p => vp.ProductId == p.PK_ProductId).Image != null)
+                {
+                    var imagePath = serviceResult.Products.Find(p => vp.ProductId == p.PK_ProductId).Image.ImageRelativePath;
+                    vp.Image = service.SetProductImage(imagePath);
+                }
+                
+            }
             return Ok(mappedProducts);
         }
-
         [HttpPut]
-        public IActionResult UpdateProduct(ViewProduct viewProduct)
+        public IActionResult UpdateProduct([FromForm] string productString, [FromForm] IFormFile uploadedFile)
         {
-                var product = mapper.Map<Product>(viewProduct);
-                service.UpdateProducts(product);                
+            ViewProduct viewProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<ViewProduct>(productString);
+            var product = mapper.Map<Product>(viewProduct);
+            service.UpdateProducts(product, uploadedFile);              
                 return Ok();            
         }
         [HttpPost]
-        public IActionResult AddProduct(ViewProduct viewProduct)
+        public IActionResult AddProduct([FromForm] string productString,[FromForm] IFormFile uploadedFile)
         {
+            ViewProduct viewProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<ViewProduct>(productString);
             var product = mapper.Map<Product>(viewProduct);
-            service.AddProduct(product);
+            service.AddProduct(product,uploadedFile);
             return Ok();
         }
         [HttpDelete("{id}")]

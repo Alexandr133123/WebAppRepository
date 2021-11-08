@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { FilterEventService } from "src/app/features/product-page/service/filter-event.service";
+import { EventService } from "src/app/features/product-page/service/event.service";
 
 @Component({
     selector: 'product-IOOS-comp',
@@ -10,7 +10,7 @@ export class IncludeOutOfStockComponent implements OnInit {
     @Output() sendOutOfStock = new EventEmitter<boolean>();
     public includeOutOfStock: boolean = false;
 
-    constructor(private filterEvent: FilterEventService) {
+    constructor(private filterEvent: EventService) {
     }
 
     public ngOnInit() {

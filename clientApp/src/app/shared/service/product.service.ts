@@ -48,13 +48,20 @@ export class ProductService {
         });
 
     }
-    public updateProduct(product: Product) {
+    public updateProduct(product: Product, file: File) {
+        var blob = new Blob([JSON.stringify(product)],{})
+        var data = new FormData();
+          data.append('productString', JSON.stringify(product));
+          data.append("uploadedFile",file);
 
-        return this.http.put(this.url, product);
+        return this.http.put(this.url, data);
     }
-    public addProduct(product: Product) {
-
-        return this.http.post(this.url, product);
+    public addProduct(product: Product, file: File) {
+        var blob = new Blob([JSON.stringify(product)],{})
+        var data = new FormData();
+          data.append('productString', JSON.stringify(product));
+          data.append("uploadedFile",file);
+        return this.http.post(this.url, data);
     }
     public deleteProduct(id: number) {
 

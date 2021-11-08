@@ -5,7 +5,7 @@ import { FlatTreeControl } from "@angular/cdk/tree";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
 import { CategoryService } from "./service/category.service";
 import { SelectionModel } from '@angular/cdk/collections';
-import { FilterEventService } from "../../features/product-page/service/filter-event.service";
+import { EventService } from "../../features/product-page/service/event.service";
 import { first } from "rxjs/operators";
 import { MatTree } from "@angular/material/tree";
 
@@ -36,7 +36,7 @@ export class CategoryInfoComponent implements OnInit {
   @Output() sendCategories = new EventEmitter<string[]>();
   @Output() sendEditCategories = new EventEmitter<Category[]>();
 
-  constructor(private categoryService: CategoryService, private filterEvent: FilterEventService) {
+  constructor(private categoryService: CategoryService, private eventService: EventService) {
     this.selectedEditCategories = new Array<Category>();
     this.treeFlattener = new MatTreeFlattener(this.transformer.bind(this), this.getLevel,
       this.isExpandable, this.getChildren);
@@ -52,8 +52,7 @@ export class CategoryInfoComponent implements OnInit {
       this.categoriesLoaded = true;
       this.initializeTreeNodes();
     });
-
-    this.filterEvent.searchInvoked.subscribe(e => this.sendCategories.emit(this.setFilters()));
+    this.eventService.searchInvoked.subscribe(e => this.sendCategories.emit(this.setFilters()));
   }
   public sendSelectedCategoriesId(){
     var categoriesSelected = this.checklistSelection.selected.map(n => n.categoryId.toString()); 
@@ -133,7 +132,7 @@ export class CategoryInfoComponent implements OnInit {
 
   private getLevel = (node: FlatTreeNode) => node.level;
   private isExpandable = (node: FlatTreeNode) => node.expandable;
-  private getChildren = (node: Category): Category[] => node.parentCategory;
+  private getChildren = (node: Category): Category[] => node.children;
 
   //public hasNoContent = (_: number, _nodeData: FlatTreeNode) => _nodeData.name === '';
 
@@ -141,8 +140,8 @@ export class CategoryInfoComponent implements OnInit {
     var selectedCategory = categories.find(c => c.categoryName == node.name);
 
     categories.forEach((c: Category) => {
-      if (c.parentCategory !== undefined && c.parentCategory.length > 0 && selectedCategory == undefined) {
-        selectedCategory = this.findCategoryByName(node, c.parentCategory);
+      if (c.children !== undefined && c.children.length > 0 && selectedCategory == undefined) {
+        selectedCategory = this.findCategoryByName(node, c.children);
       }
 
     });
@@ -177,7 +176,7 @@ export class CategoryInfoComponent implements OnInit {
     flatNode.name = node.categoryName;
     flatNode.parentCategoryId = node.parentCategoryId;
     flatNode.level = level;
-    flatNode.expandable = !!node.parentCategory?.length;
+    flatNode.expandable = !!node.children?.length;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;

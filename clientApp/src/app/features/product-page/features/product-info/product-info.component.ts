@@ -6,6 +6,8 @@ import { EventEmitter } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { AddProductComponent } from "../add-product/add-product.component";
 import { ProductService } from "../../../../shared/service/product.service";
+import { ProductWithImageInfo } from "../../models/ProductWithImageInfo";
+import { EventService } from "../../service/event.service";
 
 @Component({
     selector: 'Xproduct-info',
@@ -17,15 +19,16 @@ export class ProductInfoComponent {
     @Input() product: Product;
     @Output() sendProductId = new EventEmitter<number>();
 
-    constructor(public dialog: MatDialog, private productService: ProductService){}
+    constructor(public dialog: MatDialog, private productService: ProductService, private eventService: EventService){}
 
     public openDialog(){
         const dialogRef = this.dialog.open(AddProductComponent, {
             data: this.product
         });
-        dialogRef.afterClosed().subscribe((result: Product) => {
+        dialogRef.afterClosed().subscribe((result: ProductWithImageInfo) => {
             if(result){                
-                this.productService.updateProduct(result).subscribe();
+                this.productService.updateProduct(result.product,result.file).subscribe();
+                this.eventService.productLoadInvoked.next();
             }
         });
     }

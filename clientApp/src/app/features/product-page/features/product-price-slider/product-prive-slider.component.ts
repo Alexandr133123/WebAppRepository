@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output } from "@angular/core";
 import { EventEmitter } from "@angular/core";
-import { FilterEventService } from "src/app/features/product-page/service/filter-event.service";
+import { EventService } from "src/app/features/product-page/service/event.service";
 
 
 @Component({
@@ -13,7 +13,7 @@ export class ProductPriceSliderComponent implements OnInit {
     @Output() sendProductPriceFilter = new EventEmitter<number>();
     public currentPriceFilter: number;
 
-    constructor(private filterEvent: FilterEventService) { }
+    constructor(private filterEvent: EventService) { }
 
     public ngOnInit() {
         this.filterEvent.searchInvoked.subscribe(e => this.sendProductPriceFilter.emit(this.currentPriceFilter));

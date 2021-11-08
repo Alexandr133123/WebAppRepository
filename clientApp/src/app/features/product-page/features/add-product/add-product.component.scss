@@ -10,6 +10,19 @@
 .alert{
     color: #721c24;
     background-color: #f8d7da;
-    border-color: #f5c6cb;
-    
+    border-color: #f5c6cb;   
 }
+
+.file-choose-div{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: auto;
+    max-height: 250px;
+    
+    .productImage{
+
+        max-height: 400px;
+        max-width: 400px;
+    }
+}
+

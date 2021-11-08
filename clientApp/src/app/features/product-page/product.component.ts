@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from '../../shared/service/product.service';
 import { Product } from '../../shared/models/Product';
-import { FilterEventService } from './service/filter-event.service';
+import { EventService } from './service/event.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -9,6 +9,7 @@ import { first } from 'rxjs/operators';
 import { ProductResponse } from 'src/app/shared/models/ProductResponse';
 import { MatDialog } from '@angular/material/dialog';
 import { AddProductComponent } from './features/add-product/add-product.component';
+import { ProductWithImageInfo } from './models/ProductWithImageInfo';
 @Component({
   selector: 'product-comp',
   templateUrl: './product.component.html',
@@ -28,7 +29,7 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   public dataSource = new MatTableDataSource<Product>();
   @ViewChild('paginator') paginator: MatPaginator;
 
-  constructor(private productService: ProductService, private eventService: FilterEventService, public dialog: MatDialog) { }
+  constructor(private productService: ProductService, private eventService: EventService, public dialog: MatDialog) { }
 
 
   public loadProducts() {
@@ -51,14 +52,15 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
         const dialogRef = this.dialog.open(AddProductComponent, {
           data: this.product
       });
-      dialogRef.afterClosed().subscribe((result: Product) => {
+      dialogRef.afterClosed().subscribe((result: ProductWithImageInfo) => {
         if(result){                            
-            this.productService.addProduct(result).subscribe(data => this.loadProducts());
+            this.productService.addProduct(result.product, result.file).subscribe(data => this.loadProducts());
             this.product = new Product();
         }
     });
   }
   public ngOnInit() {
+    this.eventService.productLoadInvoked.subscribe(e => this.loadProducts());
     this.product = new Product();
   }
 

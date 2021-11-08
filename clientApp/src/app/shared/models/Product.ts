@@ -1,3 +1,4 @@
+import { Byte } from "@angular/compiler/src/util";
 import { Category } from "./Category";
 
 export class Product{
@@ -6,4 +7,5 @@ export class Product{
      price: number;
      quantityInStock: number;
      categories: Category[];
+     image: ArrayBuffer;
 }

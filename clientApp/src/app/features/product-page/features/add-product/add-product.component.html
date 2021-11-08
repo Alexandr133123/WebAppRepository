@@ -21,7 +21,13 @@
     <div class="alert" *ngIf="isNotSelected">
         <h4>Product Must Have At Least One Category</h4>
     </div>
-
+</div>
+<div class="file-choose-div">
+    <div>
+        <img [src]="imageUrl" class="productImage">
+    </div>
+    <input type="file" #file id="file" (change)="setChoosenFile(file.files)"
+        accept=".jpg,.png">
 
 </div>
 <div mat-dialog-actions>

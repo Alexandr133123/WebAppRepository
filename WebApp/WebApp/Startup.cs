@@ -18,6 +18,8 @@ using WebApp.PresentationLayer.MapperConfig;
 using Microsoft.EntityFrameworkCore.Proxies;
 using AutoMapper;
 using WebApp.PresentationLayer.DTO;
+using WebApp.PresentationLayer;
+using Z.EntityFramework.Plus;
 
 namespace WebApp
 {
@@ -32,8 +34,7 @@ namespace WebApp
             
         }
 
-        public IConfiguration Configuration { get; }
-
+        public IConfiguration Configuration { get; }       
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");

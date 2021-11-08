@@ -19,7 +19,7 @@ namespace WebApp.DataAccessLayer.Repository
             this.db = db;
         }
         
-        public List<T> ExecuteProcedure<T>(ProdcedureParameters parameters) where T: class
+        public List<T> ExecuteProductInfoReport2<T>(ProdcedureParameters parameters) where T: class
         {
             var query= db.Set<T>().FromSqlRaw(
                @"EXECUTE dbo.ProductInfoReport2 @CategoryIds, @StartDate,@EndDate,@IncludeOutOfStock,@GroupByMode",

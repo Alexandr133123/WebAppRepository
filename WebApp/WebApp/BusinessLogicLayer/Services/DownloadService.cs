@@ -25,19 +25,19 @@ namespace WebApp.BusinessLogicLayer.Services
             if (parameters.GroupByMode == 1)
             {
                 csv = CsvSerializer.SerializeToCsv<ProductGroupByLastModified>
-                    (procedureManager.ExecuteProcedure<ProductGroupByLastModified>(parameters));
+                    (procedureManager.ExecuteProductInfoReport2<ProductGroupByLastModified>(parameters));
                
             }
             else if (parameters.GroupByMode == 2)
             {
                 csv = CsvSerializer.SerializeToCsv<ProductGroupByCategory>
-                     (procedureManager.ExecuteProcedure<ProductGroupByCategory>(parameters));
+                     (procedureManager.ExecuteProductInfoReport2<ProductGroupByCategory>(parameters));
                 
             }
             else if (parameters.GroupByMode == 3)
             {
                 csv = CsvSerializer.SerializeToCsv<ProductGroupByPrice>
-                     (procedureManager.ExecuteProcedure<ProductGroupByPrice>(parameters));
+                     (procedureManager.ExecuteProductInfoReport2<ProductGroupByPrice>(parameters));
                 
             }
 

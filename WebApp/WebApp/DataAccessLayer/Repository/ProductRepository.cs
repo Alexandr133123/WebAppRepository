@@ -9,6 +9,8 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Collections;
 using System;
+using Serilog;
+using WebApp.PresentationLayer;
 
 namespace WebApp.DataAccessLayer.Repository
 {
@@ -31,10 +33,16 @@ namespace WebApp.DataAccessLayer.Repository
             productQuery.Categories = categoryQuery;
             productQuery.LastModified = DateTime.UtcNow;
             productQuery.Price = product.Price;
+
+            var prevProductName = productQuery.ProductName;
+
             productQuery.ProductName = product.ProductName;
             productQuery.QuantityInStock = product.QuantityInStock;
-            db.SaveChanges();         
-            
+            db.SaveChanges();
+            var categoryString = string.Join(", ",productQuery.Categories.Select(c => c.CategoryName));
+            string logString = String.Format("Product: {0} Updated =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
+                prevProductName,productQuery.ProductName,productQuery.Price,productQuery.QuantityInStock,productQuery.LastModified,categoryString);
+            Log.Information(logString);
         }
 
         public void AddProduct(Product product)
@@ -43,12 +51,17 @@ namespace WebApp.DataAccessLayer.Repository
             product.Categories = categoryQuery;
             db.Add(product);
             db.SaveChanges();
+            var categoryString = string.Join(", ", product.Categories.Select(c => c.CategoryName));
+            string logString = String.Format("Product: {0} Added =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
+               product.ProductName, product.ProductName, product.Price, product.QuantityInStock, product.LastModified, categoryString);
+            Log.Information(logString);
         }
         public void DeleteProduct(int id)
         {
             var product = db.Products.Include(p => p.Categories).Single(p => p.PK_ProductId == id);           
             db.Remove(product);            
             db.SaveChanges();
+            Log.Information($"Product Deleted => {product.ProductName}");
         }
 
         public decimal GetMaxPrice()

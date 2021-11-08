@@ -6,10 +6,9 @@ using System.Linq;
 using WebApp.BusinessLogicLayer.IServices;
 using AutoMapper;
 using WebApp.PresentationLayer.DTO;
-using WebApp.PresentationLayer.DTO;
 using Microsoft.Extensions.Configuration;
 using WebApp.DataAccessLayer.Model;
-
+using Serilog;
 namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
@@ -40,7 +39,7 @@ namespace WebApp.Controllers
         public IActionResult UpdateProduct(ViewProduct viewProduct)
         {
                 var product = mapper.Map<Product>(viewProduct);
-                service.UpdateProducts(product);            
+                service.UpdateProducts(product);                
                 return Ok();            
         }
         [HttpPost]

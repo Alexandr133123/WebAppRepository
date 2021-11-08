@@ -30,7 +30,7 @@ namespace WebApp.PresentationLayer.MapperConfig
                 .ForMember(vp => vp.ProductId, m => m.MapFrom(p => p.PK_ProductId));
             CreateMap<Category, ViewCategory>()
                 .ForMember(vc => vc.CategoryId, c => c.MapFrom(pc => pc.PK_CategoryId))
-                .ForMember(vc => vc.ParentCategory, c => c.MapFrom(pc => pc.InverseFkParentCategory))
+                .ForMember(vc => vc.Children, c => c.MapFrom(pc => pc.InverseFkParentCategory))
                 .ForMember(vc => vc.ParentCategoryId, c => c.MapFrom(pc => pc.FK_ParentCategoryId));
             CreateMap<ProductResponse, ViewProductResponse>()
                 .ForMember(pr => pr.Products, p => p.MapFrom(pc => pc.Products));
@@ -41,7 +41,7 @@ namespace WebApp.PresentationLayer.MapperConfig
                 .ForMember(p => p.Categories, m => m.MapFrom(vp => vp.Categories));
             CreateMap<ViewCategory, Category>()
               .ForMember(vc => vc.PK_CategoryId, c => c.MapFrom(pc => pc.CategoryId))
-              .ForMember(vc => vc.InverseFkParentCategory, c => c.MapFrom(pc => pc.ParentCategory))
+              .ForMember(vc => vc.InverseFkParentCategory, c => c.MapFrom(pc => pc.Children))
               .ForMember(vc => vc.FK_ParentCategoryId, c => c.MapFrom(pc => pc.ParentCategoryId))
               .ForMember(vc => vc.FK_ParentCategory, m => m.Ignore());
             

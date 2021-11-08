@@ -55,22 +55,11 @@ namespace WebApp.BusinessLogicLayer.Services
         public ChartDTO GetChartChartData()
         {
             var products = repository.GetProducts().ToList();
-            List<decimal> productPrice = new List<decimal>();
-            List<int> productCount = new List<int>();
-            foreach(Product p in products)
-            {
-                if (!productPrice.Contains(p.Price))
-                {
-                    productPrice.Add(p.Price);           
-                }
-            }
+            List<decimal> productPrice = products.Select(p => p.Price).Distinct().ToList();
             productPrice.Sort();
-            foreach(decimal price in productPrice)
-            {
-                var currentPriceProductCount = products.Where(ap => ap.Price == price).Select(ap => ap.QuantityInStock);
-
-                productCount.Add(currentPriceProductCount.Sum());
-            }
+            List<int> productCount = productPrice
+                .Select(price => products.Where(product => product.Price == price).Sum(product => product.QuantityInStock)).ToList();                
+               
             return new ChartDTO(productPrice, productCount);
         }
         

@@ -10,13 +10,13 @@ namespace WebApp.DataAccessLayer.IRepository
 {
     public interface IProductRepository
     {
-        decimal GetMaxPrice();
+        Task<decimal> GetMaxPrice();
         IQueryable<Product> GetProducts(Filters filters);
-        void UpdateProduct(Product product);
-        void UpdateProduct(Product product, IFormFile uploadedFile);
-        void AddProduct(Product product);
-        void AddProduct(Product product, IFormFile uploadedFile);
-        void DeleteProduct(int id);
+        Task UpdateProduct(Product product);
+        Task UpdateProduct(Product product, IFormFile uploadedFile);
+        Task AddProduct(Product product);
+        Task AddProduct(Product product, IFormFile uploadedFile);
+        Task DeleteProductAsync(int id);
         IQueryable<Product> GetProducts();
 
     }

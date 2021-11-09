@@ -9,6 +9,6 @@ namespace WebApp.DataAccessLayer.IRepository
 {
     public interface IProcedureManager
     {
-        List<T> ExecuteProductInfoReport2<T>(ProdcedureParameters parameters) where T: class;
+        Task<List<T>> ExecuteProductInfoReport2Async<T>(ProdcedureParameters parameters) where T: class;
     }
 }

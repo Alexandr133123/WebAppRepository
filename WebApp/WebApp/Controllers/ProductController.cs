@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using WebApp.BusinessLogicLayer.IServices;
 using AutoMapper;
 using WebApp.PresentationLayer.DTO;
 using Microsoft.Extensions.Configuration;
 using WebApp.DataAccessLayer.Model;
-using Serilog;
+using System.Threading.Tasks;
+
 namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
@@ -27,17 +26,17 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetFilteredProducts([FromQuery] Filters filters, [FromQuery] ProductParameters parameners)
+        public async Task<IActionResult> GetFilteredProductsAsync([FromQuery] Filters filters, [FromQuery] ProductParameters parameners)
         {
             parameners.MaxPageSize = Int32.Parse(configuration["Pagination:MaxPageSize"]);
-            var serviceResult = service.GetProducts(filters, parameners);
+            ProductResponse serviceResult = await service.GetProductsAsync(filters, parameners);
             var mappedProducts = mapper.Map<ViewProductResponse>(serviceResult);
             foreach(ViewProduct vp in mappedProducts.Products)
             {
-                if(serviceResult.Products.Find(p => vp.ProductId == p.PK_ProductId).Image != null)
+                ProductImage imagePath = serviceResult.Products.Find(p => vp.ProductId == p.PK_ProductId).Image;
+                if (imagePath != null)
                 {
-                    var imagePath = serviceResult.Products.Find(p => vp.ProductId == p.PK_ProductId).Image.ImageRelativePath;
-                    vp.Image = service.SetProductImage(imagePath);
+                    vp.Image = await service.SetProductImageAsync(imagePath.ImageRelativePath);
                 }
                 
             }
@@ -45,10 +44,14 @@ namespace WebApp.Controllers
         }
         [HttpPut]
         public IActionResult UpdateProduct([FromForm] string productString, [FromForm] IFormFile uploadedFile)
-        {
+        {            
             ViewProduct viewProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<ViewProduct>(productString);
             var product = mapper.Map<Product>(viewProduct);
-            service.UpdateProducts(product, uploadedFile);              
+            if(uploadedFile == null)
+            {                
+                return Ok();
+            }
+            service.UpdateProductsAsync(product, uploadedFile);              
                 return Ok();            
         }
         [HttpPost]
@@ -56,7 +59,12 @@ namespace WebApp.Controllers
         {
             ViewProduct viewProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<ViewProduct>(productString);
             var product = mapper.Map<Product>(viewProduct);
-            service.AddProduct(product,uploadedFile);
+            if (uploadedFile == null)
+            {
+                service.AddProduct(product);
+                return Ok();
+            }
+            service.AddProductAsync(product,uploadedFile);
             return Ok();
         }
         [HttpDelete("{id}")]
@@ -67,9 +75,9 @@ namespace WebApp.Controllers
         }
         [HttpGet]
         [Route("chart")]
-        public IActionResult GetChartData()
+        public async Task<IActionResult> GetChartDataAsync()
         {
-            return Ok(service.GetChartChartData());
+            return  Ok(await service.GetChartChartDataAsync());
         }
     }
 }

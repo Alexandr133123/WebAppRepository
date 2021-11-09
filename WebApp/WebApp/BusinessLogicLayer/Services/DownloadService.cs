@@ -20,24 +20,24 @@ namespace WebApp.BusinessLogicLayer.Services
         public DownloadService(IProcedureManager procedureManager) {
             this.procedureManager = procedureManager;
         }
-        public byte[] GetCSVData(ProdcedureParameters parameters)
+        public async Task<byte[]> GetCSVDataAsync(ProdcedureParameters parameters)
         {
             if (parameters.GroupByMode == 1)
             {
-                csv = CsvSerializer.SerializeToCsv<ProductGroupByLastModified>
-                    (procedureManager.ExecuteProductInfoReport2<ProductGroupByLastModified>(parameters));
+                csv =  CsvSerializer.SerializeToCsv<ProductGroupByLastModified>
+                    (await procedureManager.ExecuteProductInfoReport2Async<ProductGroupByLastModified>(parameters));
                
             }
             else if (parameters.GroupByMode == 2)
             {
-                csv = CsvSerializer.SerializeToCsv<ProductGroupByCategory>
-                     (procedureManager.ExecuteProductInfoReport2<ProductGroupByCategory>(parameters));
+                csv =  CsvSerializer.SerializeToCsv<ProductGroupByCategory>
+                     (await procedureManager.ExecuteProductInfoReport2Async<ProductGroupByCategory>(parameters));
                 
             }
             else if (parameters.GroupByMode == 3)
             {
                 csv = CsvSerializer.SerializeToCsv<ProductGroupByPrice>
-                     (procedureManager.ExecuteProductInfoReport2<ProductGroupByPrice>(parameters));
+                     (await procedureManager.ExecuteProductInfoReport2Async<ProductGroupByPrice>(parameters));
                 
             }
 

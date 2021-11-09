@@ -9,6 +9,6 @@ namespace WebApp.BusinessLogicLayer.IServices
 {
     public interface IDownloadService
     {
-        byte[] GetCSVData(ProdcedureParameters parameters);
+        Task<byte[]> GetCSVDataAsync(ProdcedureParameters parameters);
     }
 }

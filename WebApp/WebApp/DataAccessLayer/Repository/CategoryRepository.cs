@@ -22,7 +22,7 @@ namespace WebApp.DataAccessLayer.Repository
 
         public IQueryable<Category> GetCategories(List<string> categories)
         {
-            var sqlString = String.Join(";",categories);
+            string sqlString = string.Join(";",categories);
 
             return db.Categories.FromSqlRaw(
 
@@ -51,7 +51,7 @@ namespace WebApp.DataAccessLayer.Repository
 		public IEnumerable<Category> GetCategories()
         {
 
-			var categoryQuery = db.Categories.FromSqlRaw(
+            IQueryable<Category> categoryQuery = db.Categories.FromSqlRaw(
 
 				@"WITH R AS
                  (

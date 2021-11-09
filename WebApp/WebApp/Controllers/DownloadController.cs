@@ -22,9 +22,9 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public FileResult DownloadParameters([FromBody] ProdcedureParameters parameters)
+        public async Task<FileResult> DownloadParametersAsync([FromBody] ProdcedureParameters parameters)
         {
-            byte[] fileContent =  service.GetCSVData(parameters);
+            byte[] fileContent =  await service.GetCSVDataAsync(parameters);
             string file_type = "application/csv";
             string file_name = "products.csv";
             

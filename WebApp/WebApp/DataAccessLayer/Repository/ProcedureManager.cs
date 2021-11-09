@@ -19,16 +19,16 @@ namespace WebApp.DataAccessLayer.Repository
             this.db = db;
         }
         
-        public List<T> ExecuteProductInfoReport2<T>(ProdcedureParameters parameters) where T: class
+        public async Task<List<T>> ExecuteProductInfoReport2Async<T>(ProdcedureParameters parameters) where T: class
         {
-            var query= db.Set<T>().FromSqlRaw(
+            List<T> list = await db.Set<T>().FromSqlRaw(
                @"EXECUTE dbo.ProductInfoReport2 @CategoryIds, @StartDate,@EndDate,@IncludeOutOfStock,@GroupByMode",
                new SqlParameter("CategoryIds", parameters.CategoryIds),
                new SqlParameter("StartDate", parameters.DateFrom),
                new SqlParameter("EndDate", parameters.DateTo),
                new SqlParameter("IncludeOutOfStock", 1),
-               new SqlParameter("GroupByMode", parameters.GroupByMode)).ToList();
-            return query;
+               new SqlParameter("GroupByMode", parameters.GroupByMode)).ToListAsync();
+            return list;
           
          
 		}

@@ -9,12 +9,13 @@ namespace WebApp.BusinessLogicLayer.IServices
 {
     public interface IProductService
     {
-        ProductResponse GetProducts(Filters filters, ProductParameters parameters);
+        Task<ProductResponse> GetProductsAsync(Filters filters, ProductParameters parameters);
         void UpdateProducts(Product product);
-        void AddProduct(Product product,IFormFile uploadedFile);
-        void UpdateProducts(Product product, IFormFile uploadedFile);
+        Task AddProductAsync(Product product,IFormFile uploadedFile);
+        void AddProduct(Product product);
+        Task UpdateProductsAsync(Product product, IFormFile uploadedFile);
         void DeleteProduct(int id);
-        ChartDTO GetChartChartData();
-        byte[] SetProductImage(string relativePath);
+        Task<ChartDTO> GetChartChartDataAsync();
+        Task<byte[]> SetProductImageAsync(string relativePath);
     }
 }

@@ -1,17 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using WebApp.DataAccessLayer.DB;
 using WebApp.DataAccessLayer.IRepository;
 using WebApp.DataAccessLayer.Model;
 using WebApp.PresentationLayer.DTO;
-using System.Data;
-using System.Threading.Tasks;
-using System.Collections;
-using System;
-using Serilog;
-using WebApp.PresentationLayer;
-using Microsoft.AspNetCore.Http;
 
 namespace WebApp.DataAccessLayer.Repository
 {
@@ -27,84 +25,84 @@ namespace WebApp.DataAccessLayer.Repository
 
         }
 
-        public void UpdateProduct(Product product)
+        public async Task UpdateProduct(Product product)
         {            
-            var productQuery = db.Products.Include(p => p.Categories).Single(dbp => dbp.PK_ProductId == product.PK_ProductId);
-            var categoryQuery = db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToList();
-            productQuery.Categories = categoryQuery;
-            productQuery.LastModified = DateTime.UtcNow;
-            productQuery.Price = product.Price;
+            Product lProduct = await db.Products.Include(p => p.Categories).SingleAsync(dbp => dbp.PK_ProductId == product.PK_ProductId);
+            List<Category> categoryList = await db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToListAsync();
+            lProduct.Categories = categoryList;
+            lProduct.LastModified = DateTime.UtcNow;
+            lProduct.Price = product.Price;
 
-            var prevProductName = productQuery.ProductName;
-            productQuery.ProductName = product.ProductName;
-            productQuery.QuantityInStock = product.QuantityInStock;
-            db.SaveChanges();
-            var categoryString = string.Join(", ",productQuery.Categories.Select(c => c.CategoryName));
+            string prevProductName = lProduct.ProductName;
+            lProduct.ProductName = product.ProductName;
+            lProduct.QuantityInStock = product.QuantityInStock;
+            await db.SaveChangesAsync();
+            string categoryString = string.Join(", ", lProduct.Categories.Select(c => c.CategoryName));
             string logString = String.Format("Product: {0} Updated =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
-                prevProductName,productQuery.ProductName,productQuery.Price,productQuery.QuantityInStock,productQuery.LastModified,categoryString);
+                prevProductName, lProduct.ProductName, lProduct.Price, lProduct.QuantityInStock, lProduct.LastModified,categoryString);
             Log.Information(logString);
         }
-        public void UpdateProduct(Product product, IFormFile uploadedFile)
+        public async Task UpdateProduct(Product product, IFormFile uploadedFile)
         {
-            var productQuery = db.Products.Include(p => p.Categories).Include(p => p.Image).Single(dbp => dbp.PK_ProductId == product.PK_ProductId);
-            if(productQuery.Image == null)
+            Product lProduct = await db.Products.Include(p => p.Categories).Include(p => p.Image).SingleAsync(dbp => dbp.PK_ProductId == product.PK_ProductId);
+            if(lProduct.Image == null)
             {
-                productQuery.Image = new ProductImage(productQuery.PK_ProductId, uploadedFile.FileName);
+                lProduct.Image = new ProductImage(lProduct.PK_ProductId, uploadedFile.FileName);
             }
             else
             {
-                productQuery.Image.ImageRelativePath = uploadedFile.FileName;
+                lProduct.Image.ImageRelativePath = uploadedFile.FileName;
             }
-            var categoryQuery = db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToList();
-            productQuery.Categories = categoryQuery;
-            productQuery.LastModified = DateTime.UtcNow;
-            productQuery.Price = product.Price;
+            List<Category> categoryList = await db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToListAsync();
+            lProduct.Categories = categoryList;
+            lProduct.LastModified = DateTime.UtcNow;
+            lProduct.Price = product.Price;
 
-            var prevProductName = productQuery.ProductName;
-            productQuery.ProductName = product.ProductName;
-            productQuery.QuantityInStock = product.QuantityInStock;
-            db.SaveChanges();
-            var categoryString = string.Join(", ", productQuery.Categories.Select(c => c.CategoryName));
+            string prevProductName = lProduct.ProductName;
+            lProduct.ProductName = product.ProductName;
+            lProduct.QuantityInStock = product.QuantityInStock;
+            await db.SaveChangesAsync();
+            string categoryString = string.Join(", ", lProduct.Categories.Select(c => c.CategoryName));
             string logString = String.Format("Product: {0} Updated =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
-                prevProductName, productQuery.ProductName, productQuery.Price, productQuery.QuantityInStock, productQuery.LastModified, categoryString);
+                prevProductName, lProduct.ProductName, lProduct.Price, lProduct.QuantityInStock, lProduct.LastModified, categoryString);
             Log.Information(logString);
         }
 
-        public void AddProduct(Product product)
+        public async Task AddProduct(Product product)
         {
-            var categoryQuery = db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToList();
-            product.Categories = categoryQuery;
-            db.Add(product);
-            db.SaveChanges();
-            var categoryString = string.Join(", ", product.Categories.Select(c => c.CategoryName));
+            List<Category> categoryList = await db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToListAsync();
+            product.Categories = categoryList;
+            await db.AddAsync(product);
+            await db.SaveChangesAsync();          
+            string categoryString = string.Join(", ", product.Categories.Select(c => c.CategoryName));
             string logString = String.Format("Product: {0} Added =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
                product.ProductName, product.ProductName, product.Price, product.QuantityInStock, product.LastModified, categoryString);
             Log.Information(logString);
         }
-        public void AddProduct(Product product, IFormFile uploadedFile)
+        public async Task AddProduct(Product product, IFormFile uploadedFile)
         {
-            var categoryQuery = db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToList();
-            product.Categories = categoryQuery;
+            List<Category> categoryList = await db.Categories.Where(dbc => product.Categories.Select(c => c.PK_CategoryId).Contains(dbc.PK_CategoryId)).ToListAsync();
+            product.Categories = categoryList;
             product.Image = new ProductImage(product.PK_ProductId, uploadedFile.FileName);
-            db.Add(product);
-            db.SaveChanges();
-            var categoryString = string.Join(", ", product.Categories.Select(c => c.CategoryName));
+            await db.AddAsync(product);
+            await db.SaveChangesAsync();
+            string categoryString = string.Join(", ", product.Categories.Select(c => c.CategoryName));
             string logString = String.Format("Product: {0} Added =>\nProductName:{1}\nPrice:{2}\nQuantityInStock:{3}\nLastModified:{4}\nCategories:{5}",
                product.ProductName, product.ProductName, product.Price, product.QuantityInStock, product.LastModified, categoryString);
             Log.Information(logString);
 
         }
-        public void DeleteProduct(int id)
+        public async Task DeleteProductAsync(int id)
         {
-            var product = db.Products.Include(p => p.Categories).Include(p => p.Image).Single(p => p.PK_ProductId == id);           
+            Product product = await db.Products.Include(p => p.Categories).Include(p => p.Image).SingleAsync(p => p.PK_ProductId == id);           
             db.Remove(product);            
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             Log.Information($"Product Deleted => {product.ProductName}");
         }
 
-        public decimal GetMaxPrice()
+        public async Task<decimal> GetMaxPrice()
         {
-            return db.Products.Max(p => p.Price); 
+            return await db.Products.MaxAsync(p => p.Price); 
         }
         public IQueryable<Product> GetProducts()
         {
@@ -138,7 +136,7 @@ namespace WebApp.DataAccessLayer.Repository
                 query = query.Where(p => p.Categories.Any(c => categoryRepository.GetCategories(filters.Categores).AsNoTracking().ToList().Contains(c)));
             }
 
-            var result = query
+            IQueryable<Product> result = query
            .Include(p => p.Categories)
            .Include(p => p.Image)
            .AsNoTracking();

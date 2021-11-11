@@ -10,7 +10,7 @@ namespace WebApp.BusinessLogicLayer.IServices
     public interface IProductService
     {
         Task<ProductResponse> GetProductsAsync(Filters filters, ProductParameters parameters);
-        void UpdateProducts(Product product);
+        Task UpdateProducts(Product product);
         Task AddProductAsync(Product product,IFormFile uploadedFile);
         void AddProduct(Product product);
         Task UpdateProductsAsync(Product product, IFormFile uploadedFile);

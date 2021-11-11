@@ -13,7 +13,6 @@ namespace WebApp.DataAccessLayer.DB
 {
     public partial class ApplicationContext : DbContext
     {
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
@@ -21,14 +20,17 @@ namespace WebApp.DataAccessLayer.DB
         }
 
 
-
+        public DbSet<Users> User { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.ToTable(nameof(Users));
+                entity.HasKey(e => e.UserId);
+            });
             modelBuilder.Entity<ProductGroupByLastModified>(entity => {
                 entity.HasNoKey();
             });

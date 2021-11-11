@@ -58,9 +58,9 @@ namespace WebApp.BusinessLogicLayer.Services
 
             return (new ProductResponse(products, resultCount, maxPrice, parameters.PageNumber));
         }
-        public void UpdateProducts(Product product)
+        public async Task UpdateProducts(Product product)
         {
-            repository.UpdateProduct(product);
+           await repository.UpdateProduct(product);
 
         }
         public async Task UpdateProductsAsync(Product product, IFormFile uploadedFile)

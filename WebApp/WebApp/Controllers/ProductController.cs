@@ -7,11 +7,13 @@ using WebApp.PresentationLayer.DTO;
 using Microsoft.Extensions.Configuration;
 using WebApp.DataAccessLayer.Model;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService service;
@@ -43,19 +45,20 @@ namespace WebApp.Controllers
             return Ok(mappedProducts);
         }
         [HttpPut]
-        public IActionResult UpdateProduct([FromForm] string productString, [FromForm] IFormFile uploadedFile)
+        public async Task<IActionResult> UpdateProductAsync([FromForm] string productString, [FromForm] IFormFile uploadedFile)
         {            
             ViewProduct viewProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<ViewProduct>(productString);
             var product = mapper.Map<Product>(viewProduct);
             if(uploadedFile == null)
-            {                
+            {
+               await service.UpdateProducts(product);
                 return Ok();
             }
-            service.UpdateProductsAsync(product, uploadedFile);              
+            await service.UpdateProductsAsync(product, uploadedFile);              
                 return Ok();            
         }
         [HttpPost]
-        public IActionResult AddProduct([FromForm] string productString,[FromForm] IFormFile uploadedFile)
+        public async Task<IActionResult> AddProductAsync( [FromForm] string productString,[FromForm] IFormFile uploadedFile)
         {
             ViewProduct viewProduct = Newtonsoft.Json.JsonConvert.DeserializeObject<ViewProduct>(productString);
             var product = mapper.Map<Product>(viewProduct);
@@ -64,7 +67,7 @@ namespace WebApp.Controllers
                 service.AddProduct(product);
                 return Ok();
             }
-            service.AddProductAsync(product,uploadedFile);
+            await service.AddProductAsync(product,uploadedFile);
             return Ok();
         }
         [HttpDelete("{id}")]

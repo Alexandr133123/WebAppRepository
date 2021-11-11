@@ -8,6 +8,7 @@ import { AddProductComponent } from "../add-product/add-product.component";
 import { ProductService } from "../../../../shared/service/product.service";
 import { ProductWithImageInfo } from "../../models/ProductWithImageInfo";
 import { EventService } from "../../service/event.service";
+import { first } from "rxjs/operators";
 
 @Component({
     selector: 'Xproduct-info',
@@ -27,7 +28,7 @@ export class ProductInfoComponent {
         });
         dialogRef.afterClosed().subscribe((result: ProductWithImageInfo) => {
             if(result){                
-                this.productService.updateProduct(result.product,result.file).subscribe();
+                this.productService.updateProduct(result.product,result.file).pipe(first()).subscribe();
                 this.eventService.productLoadInvoked.next();
             }
         });

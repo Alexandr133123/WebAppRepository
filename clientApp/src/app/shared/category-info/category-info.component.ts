@@ -55,7 +55,7 @@ export class CategoryInfoComponent implements OnInit {
     this.eventService.searchInvoked.subscribe(e => this.sendCategories.emit(this.setFilters()));
   }
   public sendSelectedCategoriesId(){
-    var categoriesSelected = this.checklistSelection.selected.map(n => n.categoryId.toString()); 
+    const categoriesSelected = this.checklistSelection.selected.map(n => n.categoryId.toString()); 
     this.sendCategories.emit(categoriesSelected);
   }
   private sendEditedCategories() {
@@ -137,7 +137,7 @@ export class CategoryInfoComponent implements OnInit {
   //public hasNoContent = (_: number, _nodeData: FlatTreeNode) => _nodeData.name === '';
 
   private findCategoryByName(node: FlatTreeNode, categories: Category[]) {
-    var selectedCategory = categories.find(c => c.categoryName == node.name);
+    let selectedCategory = categories.find(c => c.categoryName == node.name);
 
     categories.forEach((c: Category) => {
       if (c.children !== undefined && c.children.length > 0 && selectedCategory == undefined) {
@@ -149,7 +149,7 @@ export class CategoryInfoComponent implements OnInit {
   }
 
   private categoryChanges(node: FlatTreeNode) {
-    var selectedEditCategory = this.findCategoryByName(node, this.dataSource.data);
+    const selectedEditCategory = this.findCategoryByName(node, this.dataSource.data);
 
     if (this.checklistSelection.isSelected(node) && selectedEditCategory !== undefined) {
       this.addCategoryChanges(selectedEditCategory);
@@ -193,8 +193,8 @@ export class CategoryInfoComponent implements OnInit {
       rootCategories.forEach((d: FlatTreeNode) => {
        
             if(d.expandable === true){
-              var descendants = this.treeControl.getDescendants(d);
-              var descAllSelected = descendants.length > 0 && descendants.every(child => {
+              const descendants = this.treeControl.getDescendants(d);
+              const descAllSelected = descendants.length > 0 && descendants.every(child => {
                 return this.checklistSelection.isSelected(child);
               });
       
@@ -224,8 +224,8 @@ export class CategoryInfoComponent implements OnInit {
       let childCategories = selectedCategories.filter(pc => pc.parentCategoryId == node.categoryId);
       childCategories.forEach((n: FlatTreeNode) => {
         if(n.expandable === true){
-          var descendants = this.treeControl.getDescendants(n);
-          var descAllSelected = descendants.length > 0 && descendants.every(child => {
+          const descendants = this.treeControl.getDescendants(n);
+          const descAllSelected = descendants.length > 0 && descendants.every(child => {
             return this.checklistSelection.isSelected(child);
           });
   

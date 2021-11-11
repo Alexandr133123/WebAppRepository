@@ -12,7 +12,6 @@ import { environment } from "src/environments/environment";
 export class ProductService {
 
 
-
     private url = environment.apiUrl + 'product';
 
     constructor(private http: HttpClient) { }
@@ -43,31 +42,31 @@ export class ProductService {
                 params = params.append(`category`, s);
             });
         }
-        return this.http.get(this.url, {
-            params: params
+
+        return this.http.get(this.url,{
+            params: params,
+            withCredentials: true            
         });
 
     }
     public updateProduct(product: Product, file: File) {
-        var blob = new Blob([JSON.stringify(product)],{})
-        var data = new FormData();
+        const data = new FormData();
           data.append('productString', JSON.stringify(product));
           data.append("uploadedFile",file);
 
-        return this.http.put(this.url, data);
+        return this.http.put(this.url, data, {withCredentials: true});
     }
     public addProduct(product: Product, file: File) {
-        var blob = new Blob([JSON.stringify(product)],{})
-        var data = new FormData();
+        const data = new FormData();
           data.append('productString', JSON.stringify(product));
           data.append("uploadedFile",file);
-        return this.http.post(this.url, data);
+        return this.http.post(this.url, data, {withCredentials: true});
     }
     public deleteProduct(id: number) {
 
-        return this.http.delete(this.url + '/' + id);
+        return this.http.delete(this.url + '/' + id, {withCredentials: true});
     }
     public getProductChartInfo(){
-        return this.http.get(this.url + '/chart');
+        return this.http.get(this.url + '/chart', {withCredentials: true});
     }
 }

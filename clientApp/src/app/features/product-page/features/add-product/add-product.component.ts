@@ -56,10 +56,9 @@ export class AddProductComponent {
     }
 
     public setChoosenFile(file: FileList){
-        this.uploadedFile = file.item(0)!;
-        var base64String = ""; 
+        this.uploadedFile = file.item(0)!; 
         this.uploadedFile.arrayBuffer().then(e => {
-            base64String = this.arrayBufferToBase64(e);
+            let base64String = this.arrayBufferToBase64(e);
             this.imageUrl = "data:image/jpeg;base64," + base64String; 
         });
 
@@ -67,10 +66,10 @@ export class AddProductComponent {
     }
 
     private arrayBufferToBase64( buffer: ArrayBuffer ) {
-        var binary = "";
-        var bytes = new Uint8Array( buffer );
-        var len = bytes.byteLength;
-        for (var i = 0; i < len; i++) {
+        let binary = "";
+        const bytes = new Uint8Array( buffer );
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
             binary += String.fromCharCode( bytes[ i ] );
         }
         return window.btoa(binary);

@@ -54,12 +54,13 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       dialogRef.afterClosed().subscribe((result: ProductWithImageInfo) => {
         if(result){                            
-            this.productService.addProduct(result.product, result.file).subscribe(data => this.loadProducts());
+            this.productService.addProduct(result.product, result.file).pipe(first()).subscribe(data => this.loadProducts());
             this.product = new Product();
         }
     });
   }
   public ngOnInit() {
+    this.loadProducts();
     this.eventService.productLoadInvoked.subscribe(e => this.loadProducts());
     this.product = new Product();
   }

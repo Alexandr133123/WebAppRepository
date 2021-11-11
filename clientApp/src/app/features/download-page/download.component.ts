@@ -33,9 +33,9 @@ export class DownloadComponent {
 
     private downloadFile(data: HttpResponse<Blob>){
 
-         var headerParameters = data.headers.get('content-disposition')?.match(/(?!filename=)+([a-z]*).(csv)(?=;)/);
+         const headerParameters = data.headers.get('content-disposition')?.match(/(?!filename=)+([a-z]*).(csv)(?=;)/);
          if(headerParameters![0]){
-             var name = headerParameters![0];
+             const name = headerParameters![0];
             FileSaver.saveAs(data.body!, name);
          }else{
              alert('Error: Incorrect File Name');

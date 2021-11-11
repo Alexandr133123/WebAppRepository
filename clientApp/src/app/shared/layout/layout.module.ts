@@ -4,10 +4,12 @@ import { HeaderComponent } from "./header/header.component";
 import { MatButtonModule } from "@angular/material/button";
 import { FooterComponent } from "./footer/footer.component";
 import { MainLayoutComponent } from "./main-layout/main-layout.component";
+import { CommonModule } from "@angular/common";
 @NgModule({
     imports: [
         RouterModule.forChild([]),
-        MatButtonModule
+        MatButtonModule,
+        CommonModule
     ],
     declarations:[
         MainLayoutComponent,
@@ -15,7 +17,7 @@ import { MainLayoutComponent } from "./main-layout/main-layout.component";
         FooterComponent
     ],
     exports: [
-        HeaderComponent,
+        MainLayoutComponent,
         
     ]
 })

@@ -1,4 +1,5 @@
-import { Component} from "@angular/core";
+import { Component, OnInit} from "@angular/core";
+import { AuthorizationCheckService } from "../../service/authorization-check.service";
 
 @Component({
     selector: 'app-header',
@@ -6,5 +7,12 @@ import { Component} from "@angular/core";
     styleUrls: ['./header.component.css']
 })
 export class HeaderComponent{
-
+    public isHideButtons: boolean;
+    constructor( private authCheck: AuthorizationCheckService){
+        this.isAuthorized();
+        this.authCheck.cookieEvent.subscribe(e => this.isAuthorized());
+    }
+    public isAuthorized(){
+          this.isHideButtons = this.authCheck.checkAuthorization();
+    }
 }

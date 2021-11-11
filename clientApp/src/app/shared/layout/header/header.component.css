@@ -7,3 +7,7 @@ div{
   background-color: #673ab7;
   color:white;
 }
+.link-container{
+  display: flex; 
+  justify-content: space-between;
+}

@@ -1,0 +1,30 @@
+.content-div {
+    display: block;
+}
+
+.content-inner-wrap {
+    mat-stepper{
+        width: 1000px;
+    }
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.alert{
+    color: #721c24;
+    width: 956px;
+    border-radius: 10px;
+    padding-top: 10px;
+    text-align: center;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;   
+}
+.success{
+    color: #155724;
+    width: 956px;
+    border-radius: 10px;
+    padding-top: 10px;
+    text-align: center;
+    background-color: #d4edda;
+    border-color: #c3e6cb; 
+}

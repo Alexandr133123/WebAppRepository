@@ -22,6 +22,6 @@ export class DownloadPageService{
                 dateFrom: dateFrom, dateTo:dateTo, 
                 includeOutOfStock:includeOutOfStock}
         
-        return this.http.post(this.url, body, {responseType: 'blob', observe:'response'});
+        return this.http.post(this.url, body, {responseType: 'blob', observe:'response', withCredentials: true});
     }
 }

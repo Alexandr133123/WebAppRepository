@@ -7,8 +7,8 @@ namespace WebApp.BusinessLogicLayer.IServices
 {
     public interface IAuthService
     {
-        string GetJWT(string username, string password);
+        Task<string> GetJWTAsync(string username, string password);
         int GetJWTLifeTime();
-        void CreateUser(string username, string password);
+        Task CreateUserAsync(string username, string password);
     }
 }

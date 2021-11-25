@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
+import { AuthEventService } from "src/app/shared/service/authorization-event.service";
 import { AuthorizationiService } from "../shared/auth.service";
 
 @Component({
@@ -11,12 +12,11 @@ import { AuthorizationiService } from "../shared/auth.service";
 
 export class RegistrationPageComponent{
     isLinear = true;
-    authorizationFormControl: FormControl;
     loginForm: FormGroup;
     isDisplayable: boolean;
     isAuthorizationSuccess: boolean;
     passwordForm: FormGroup;
-    constructor(private _formBuilder: FormBuilder, private registerService: AuthorizationiService ) {}
+    constructor(private _formBuilder: FormBuilder, private registerService: AuthorizationiService, private authEvent: AuthEventService ) {}
   
     ngOnInit() {
         this.loginForm = new FormGroup({
@@ -31,6 +31,7 @@ export class RegistrationPageComponent{
         const password = this.passwordForm.controls['password'].value; 
         this.registerService.register(login, password).pipe(first()).subscribe(
             data => {this.isDisplayable = true;  this.isAuthorizationSuccess = true},
-            error => {this.isDisplayable = true; this.isAuthorizationSuccess = false});
+            error => {this.isDisplayable = true; this.isAuthorizationSuccess = false},
+            () => this.authEvent.atAuthorized.next());
     }
 }

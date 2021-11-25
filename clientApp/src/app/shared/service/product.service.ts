@@ -44,8 +44,7 @@ export class ProductService {
         }
 
         return this.http.get(this.url,{
-            params: params,
-            withCredentials: true            
+            params: params          
         });
 
     }
@@ -54,19 +53,19 @@ export class ProductService {
           data.append('productString', JSON.stringify(product));
           data.append("uploadedFile",file);
 
-        return this.http.put(this.url, data, {withCredentials: true});
+        return this.http.put(this.url, data, );
     }
     public addProduct(product: Product, file: File) {
         const data = new FormData();
           data.append('productString', JSON.stringify(product));
           data.append("uploadedFile",file);
-        return this.http.post(this.url, data, {withCredentials: true});
+        return this.http.post(this.url, data);
     }
     public deleteProduct(id: number) {
 
-        return this.http.delete(this.url + '/' + id, {withCredentials: true});
+        return this.http.delete(this.url + '/' + id);
     }
     public getProductChartInfo(){
-        return this.http.get(this.url + '/chart', {withCredentials: true});
+        return this.http.get(this.url + '/chart');
     }
 }

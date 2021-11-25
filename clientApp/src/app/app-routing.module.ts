@@ -7,12 +7,12 @@ import { ProductComponent } from "./features/product-page/product.component";
 import { RegistrationPageComponent } from "./features/registration-page/registration-page.component";
 import { LayoutModule } from "./shared/layout/layout.module";
 import { MainLayoutComponent } from "./shared/layout/main-layout/main-layout.component";
-
+import { AppRouteGuard } from "./app.guard";
 const routes: Routes = [
     {path: '', redirectTo:'/login', pathMatch: 'full'},
-    {path: 'product', component: MainLayoutComponent, children: [{path: '', component: ProductComponent}]},
-    {path: 'download', component: MainLayoutComponent, children: [{path: '', component: DownloadComponent}]},
-    {path: 'chart', component: MainLayoutComponent, children: [{path: '', component: ChartPageComponent}]},
+    {path: 'product', component: MainLayoutComponent, canActivate: [AppRouteGuard], children: [{path: '', component: ProductComponent}]},
+    {path: 'download', component: MainLayoutComponent, canActivate: [AppRouteGuard],  children: [{path: '', component: DownloadComponent}]},
+    {path: 'chart', component: MainLayoutComponent, canActivate: [AppRouteGuard], children: [{path: '', component: ChartPageComponent}]},
     {path: 'login', component: MainLayoutComponent, children: [{path: '', component: LoginPageComponent}]},
     {path: 'registration', component: MainLayoutComponent, children: [{path: '', component: RegistrationPageComponent}]}
 

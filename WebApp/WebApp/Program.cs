@@ -25,7 +25,9 @@ namespace WebApp
                   .CreateLogger();
             try
             {
-                CreateHostBuilder(args).Build().Run();
+                CreateHostBuilder(args)
+                    .Build()
+                    .Run();
             }
             catch (Exception ex)
             {

@@ -1,10 +1,7 @@
 import { Component } from "@angular/core";
 import { DownloadPageService } from "./service/download-page.service";
-import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
-import { MatAnchor } from "@angular/material/button";
-import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
-import { HttpHeaders, HttpResponse } from "@angular/common/http";
+import { HttpResponse } from "@angular/common/http";
 @Component({
 
     selector: 'download-comp',
@@ -33,7 +30,7 @@ export class DownloadComponent {
 
     private downloadFile(data: HttpResponse<Blob>){
 
-         const headerParameters = data.headers.get('content-disposition')?.match(/(?!filename=)+([a-z]*).(csv)(?=;)/);
+         const headerParameters = data.headers.get('content-disposition')?.match(/(?!filename=)+([a-z]*)\.(csv)(?=;)/);
          if(headerParameters![0]){
              const name = headerParameters![0];
             FileSaver.saveAs(data.body!, name);

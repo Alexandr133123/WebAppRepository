@@ -2,7 +2,7 @@ import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
 import {Component, OnInit} from "@angular/core"
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
-import { AuthorizationCheckService } from "src/app/shared/service/authorization-check.service";
+import { AuthEventService } from "src/app/shared/service/authorization-event.service";
 import { AuthorizationiService } from "../shared/auth.service";
 
 
@@ -20,12 +20,11 @@ import { AuthorizationiService } from "../shared/auth.service";
 
 export class LoginPageComponent implements OnInit{
     isLinear = true;
-    authorizationFormControl: FormControl;
     isDisplayable: boolean;
     isAuthorizationSuccess: boolean;
     loginForm: FormGroup;
     passwordForm: FormGroup;
-    constructor(private _formBuilder: FormBuilder, private loginService: AuthorizationiService, private authCheckService: AuthorizationCheckService ) {}
+    constructor(private _formBuilder: FormBuilder, private loginService: AuthorizationiService, private authEvent: AuthEventService) {}
   
     ngOnInit() {
         this.loginForm = new FormGroup({
@@ -34,7 +33,6 @@ export class LoginPageComponent implements OnInit{
         this.passwordForm = new FormGroup({
             'password': new FormControl('', Validators.required)
         });
-        this.authCheckService.cookieEvent.subscribe();
     }
 
     public authorize(){
@@ -43,9 +41,10 @@ export class LoginPageComponent implements OnInit{
         this.loginService.authorize(login, password).pipe(first())
             .subscribe(
                 data => {this.isDisplayable = true;  this.isAuthorizationSuccess = true},
-                error => {this.isDisplayable = true; this.isAuthorizationSuccess = false}, 
-                () => {this.authCheckService.cookieEvent.next()});
-        
+                error => {this.isDisplayable = true; this.isAuthorizationSuccess = false},
+                () => this.authEvent.atAuthorized.next());
     }
+        
+    
 
 }

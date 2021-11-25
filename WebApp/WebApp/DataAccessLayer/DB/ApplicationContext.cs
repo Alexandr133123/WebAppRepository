@@ -1,17 +1,12 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApp.DataAccessLayer.Model;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.Data.SqlClient;
 using WebApp.PresentationLayer.DTO;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WebApp.DataAccessLayer.DB
 {
-    public partial class ApplicationContext : DbContext
+    public partial class ApplicationContext : IdentityDbContext
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
@@ -30,6 +25,10 @@ namespace WebApp.DataAccessLayer.DB
             {
                 entity.ToTable(nameof(Users));
                 entity.HasKey(e => e.UserId);
+                entity.HasIndex(e => e.Login)
+                .IsUnique();
+                entity.HasIndex(e => e.Password)
+                .IsUnique();
             });
             modelBuilder.Entity<ProductGroupByLastModified>(entity => {
                 entity.HasNoKey();
@@ -74,7 +73,7 @@ namespace WebApp.DataAccessLayer.DB
                 
             });
 
-
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

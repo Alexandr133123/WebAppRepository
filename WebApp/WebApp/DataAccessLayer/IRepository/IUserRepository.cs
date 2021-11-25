@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace WebApp.DataAccessLayer.IRepository
 {
     public interface IUserRepository
     {
-        List<Users> GetAllUsers();
-        void CreateUser(string username, string password);
+        Task<IdentityUser> GetUserAsync(string username, string password);
+        Task CreateUserAsync(string username, string password);
     }
 }

@@ -1,18 +1,21 @@
 import { Component, OnInit} from "@angular/core";
-import { AuthorizationCheckService } from "../../service/authorization-check.service";
+import { AuthEventService } from "../../service/authorization-event.service";
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css']
 })
-export class HeaderComponent{
+export class HeaderComponent implements OnInit{
     public isHideButtons: boolean;
-    constructor( private authCheck: AuthorizationCheckService){
-        this.isAuthorized();
-        this.authCheck.cookieEvent.subscribe(e => this.isAuthorized());
+    constructor(private authEvent: AuthEventService){
+        this.isAuthorized();        
+    }
+    ngOnInit(){
+        this.authEvent.atAuthorized.subscribe(e => this.isAuthorized());
     }
     public isAuthorized(){
-          this.isHideButtons = this.authCheck.checkAuthorization();
+
+          this.isHideButtons = document.cookie.match(/Cookie=/) !== null;
     }
 }

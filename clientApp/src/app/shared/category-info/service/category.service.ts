@@ -15,7 +15,7 @@ export class CategoryService {
     constructor(private http: HttpClient) { }
 
     public GetCategory(){
-        return this.http.get(this.url, {withCredentials: true});
+        return this.http.get(this.url);
     }
 
 }

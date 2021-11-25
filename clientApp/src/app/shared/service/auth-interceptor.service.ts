@@ -18,11 +18,14 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const req = request.clone({
+      withCredentials: true
+    })
 
-    return next.handle(request).pipe( tap(() => {},
+    return next.handle(req).pipe( tap(() => {},
       (err: any) => {
       if (err instanceof HttpErrorResponse) {
-        if (err.status === 401) {
+        if (err.status === 401 || err.status === 404) {
             this.router.navigate(['login']);          
         }else{
             return;

@@ -15,6 +15,7 @@ using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
 using WebApp.PresentationLayer.DTO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApp
 {
@@ -64,9 +65,18 @@ namespace WebApp
                 };                      
             
             });
+            services.ConfigureApplicationCookie(options => {
+                options.Cookie.Name = "Cookie";
+                options.Cookie.HttpOnly = false;
+            });
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options =>
                        options.UseSqlServer(connection));
+            services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+            })
+                    .AddEntityFrameworkStores<ApplicationContext>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProcedureManager, ProcedureManager>();
             services.AddScoped<IUserRepository, UserRepository>();

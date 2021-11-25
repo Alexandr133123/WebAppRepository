@@ -16,14 +16,14 @@ export class AuthorizationiService{
             username: login,
             password: password
         }
-        return this.http.post(this.url + '/' + 'login', body, {withCredentials: true});
+        return this.http.post(this.url + '/' + 'login', body);
     }
     public register(login: string, password: string){
         const body = {
             username: login,
             password: password
         }
-        return this.http.post(this.url + '/' + 'register', body, {withCredentials: true});
+        return this.http.post(this.url + '/' + 'register', body);
     }
 
 }

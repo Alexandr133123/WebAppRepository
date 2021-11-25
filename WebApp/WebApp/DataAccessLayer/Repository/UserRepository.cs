@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebApp.DataAccessLayer.DB;
 using WebApp.DataAccessLayer.IRepository;
@@ -11,31 +13,29 @@ namespace WebApp.DataAccessLayer.Repository
 {
     public class UserRepository: IUserRepository
     {
-        private ApplicationContext db;
+        private readonly ApplicationContext db;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _singInManager;
 
-        public UserRepository(ApplicationContext db)
+        public UserRepository(ApplicationContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             this.db = db;
+            this._userManager = userManager;
+            this._singInManager = signInManager;
         }
 
-        public List<Users> GetAllUsers()
+        public async Task<IdentityUser> GetUserAsync(string username, string password)
         {
-            List<Users> users = db.User.ToList();
-            foreach(Users user in users)
-            {
-                byte[] passwordB64 = System.Convert.FromBase64String(user.Password);
-                user.Password = System.Text.ASCIIEncoding.ASCII.GetString(passwordB64);
-            }
-            return users;
+            IdentityUser user = null;
+            return user;
         }
-        public void CreateUser(string username, string password)
+        public async Task CreateUserAsync(string username, string password)
         {
-            Users user = new Users();
-            user.Login = username;
-            byte[] passwordBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(password);
-            user.Password = System.Convert.ToBase64String(passwordBytes);
-            db.Add(user);
-            db.SaveChanges();
+            IdentityUser user = new IdentityUser();
+            user.UserName = username;
+
+            var result = await _userManager.CreateAsync(user, password);
+          
         }
     }
 }
